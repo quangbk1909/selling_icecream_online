@@ -12,12 +12,14 @@ type User struct {
 }
 
 type Store struct {
-	ID        int     `json:"id"`
-	Name      string  `json:"name"`
-	Address   string  `json:"address"`
-	Latitude  float32 `json:"latitude"`
-	Longitude float32 `json:"longitude"`
-	CreatedAt string  `json:"created_at"`
+	ID            int            `json:"id"`
+	Name          string         `json:"name"`
+	Address       string         `json:"address"`
+	ImagePath     string         `json:"image_path"`
+	Latitude      float64        `json:"latitude"`
+	Longitude     float64        `json:"longitude"`
+	CreatedAt     string         `json:"created_at"`
+	IceCreamItems []IceCreamItem `gorm:"many2many:item_store"`
 }
 
 type Rating struct {
@@ -46,16 +48,27 @@ type IceCreamItem struct {
 	ImagePath string  `json:"image_path"`
 	Price     int     `json:"price"`
 	CreatedAt string  `json:"created_at"`
-	Orders    []Order `gorm:"many2many:order_item"`
+	Stores    []Store `gorm:"many2many:item_store"`
 }
 
 type OrderItem struct {
-	ID       int `json:"id"`
-	OrderID  int `json:"order_id"`
-	ItemId   int `json:"item_id"`
-	Quantity int `json:"quantity"`
+	ID             int `json:"id"`
+	OrderID        int `json:"order_id"`
+	IceCreamItemId int `json:"ice_cream_item_id"`
+	Quantity       int `json:"quantity"`
 }
 
 func (OrderItem) TableName() string {
 	return "order_item"
+}
+
+type ItemStore struct {
+	ID             int `json:"id"`
+	IceCreamItemID int `json:"ice_cream_item_id"`
+	StoreID        int `json:"store_id"`
+	Status         int `json:"status"`
+}
+
+func (ItemStore) TableName() string {
+	return "item_store"
 }
