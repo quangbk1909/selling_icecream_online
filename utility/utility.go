@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func DecodeDataFromJsonFile(f *os.File, data interface{}) error {
@@ -17,4 +18,12 @@ func DecodeDataFromJsonFile(f *os.File, data interface{}) error {
 	}
 
 	return nil
+}
+
+func StringSearchText(text string) string {
+	// sliceText := strings.Split(text, " ")
+	// searchText := "+" + strings.Join(sliceText, " +")
+	text = strings.ReplaceAll(text, "kem", "")
+	text = strings.ReplaceAll(text, "Kem", "")
+	return text
 }

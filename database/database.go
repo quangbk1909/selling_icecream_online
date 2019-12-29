@@ -22,10 +22,10 @@ type Config struct {
 
 func SetConfig() Config {
 	//doc file config local
-	configFile, err := os.Open("config.local.json")
+	configFile, err := os.Open("./config.json")
 	if err != nil {
 		// neu khong thay file config local doc file config default
-		configFile, err = os.Open("config.default.json")
+		configFile, err = os.Open("./config.default.json")
 		if err != nil {
 			panic(err)
 		}
