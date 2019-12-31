@@ -21,9 +21,14 @@ func DecodeDataFromJsonFile(f *os.File, data interface{}) error {
 }
 
 func StringSearchText(text string) string {
-	// sliceText := strings.Split(text, " ")
+	sliceText := strings.Split(text, " ")
 	// searchText := "+" + strings.Join(sliceText, " +")
-	text = strings.ReplaceAll(text, "kem", "")
-	text = strings.ReplaceAll(text, "Kem", "")
-	return text
+	if len(sliceText) <= 1 {
+		return text
+	} else {
+		text = strings.ReplaceAll(text, "kem", "")
+		text = strings.ReplaceAll(text, "Kem", "")
+		return text
+	}
+
 }

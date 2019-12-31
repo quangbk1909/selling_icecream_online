@@ -17,6 +17,5 @@ func NewController(db *gorm.DB) *Controller {
 	}
 }
 func (this *Controller) TestController(c *gin.Context) {
-	text := c.Query("text")
-	c.JSON(http.StatusOK, text)
+	c.JSON(http.StatusOK, gin.H{"message": "HI quang"})
 }

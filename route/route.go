@@ -11,6 +11,7 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 	{
 		userR.GET("", c.GetUsers)
 		userR.GET("/:id", c.DetailUser)
+		//userR.POST("/:id/deposit".c.Deposit)
 
 	}
 
