@@ -5,9 +5,7 @@ services:
     build: .
     ports: 
       - 8080:8080 
-    restart: on-failure
-    volumes:
-      - C:\Users\Administrator\go\src\vinid_project:/usr/src/app/
+    restart: on-failure    
     depends_on:
       - fullstack-mysql          
     networks:
@@ -21,7 +19,7 @@ services:
       - 3306:3306
     environment: 
         - MYSQL_USER=root
-        - MYSQL_ALLOW_EMPTY_PASSWORD=1
+        - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
         - MYSQL_DATABASE=vinid_project
     volumes:
       - database_mysql:/var/lib/mysql/

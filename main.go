@@ -13,10 +13,12 @@ func main() {
 	r := gin.Default()
 
 	db := database.ConnectDB()
-	db.SingularTable(true)
+	db.SingularTable(true)	
 	defer db.Close()
 
-	c := controller.NewController(db)
+	dao := database.NewDao(db)
+
+	c := controller.NewController(dao)
 
 	route.InitRoute(r, c)
 

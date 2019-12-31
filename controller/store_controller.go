@@ -3,6 +3,8 @@ package controller
 import (
 	"log"
 	"net/http"
+	"strconv"
+	"vinid_project/database"
 	"vinid_project/model"
 
 	"github.com/gin-gonic/gin"
@@ -17,9 +19,10 @@ type CoordinatesJSON struct {
 // Lấy tất cả các cửa hàng
 func (controller *Controller) GetStores(c *gin.Context) {
 	var stores []model.Store
-	err := controller.db.Find(&stores).Error
+	var storeDao database.StoreDao = controller.dao
+
+	stores, err := storeDao.FetchStore()
 	if err != nil {
-		log.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -29,30 +32,53 @@ func (controller *Controller) GetStores(c *gin.Context) {
 
 // Lấy thông tin chi tiết 1 cửa hàng
 func (controller *Controller) DetaiStore(c *gin.Context) {
-	var store []model.Store
-	err := controller.db.First(&store, c.Param("id")).Error
+	var dataResponse map[string]interface{}
+	var store model.Store
+	id, err := strconv.Atoi(c.Param("id"))
+
 	if err != nil {
-		log.Println(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, store)
+	var storeDao database.StoreDao = controller.dao
+	store, err = storeDao.GetStoreByID(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	dataResponse = map[string]interface{}{
+		"id":         store.ID,
+		"name":       store.Name,
+		"address":    store.Address,
+		"image_path": store.ImagePath,
+		"latitude":   store.Latitude,
+		"longitude":  store.Longitude,
+		"created_at": store.CreatedAt,
+	}
+
+	c.JSON(http.StatusOK, dataResponse)
 }
 
 // Lấy các items trong 1 cửa hàng
 func (controller *Controller) GetItemInStore(c *gin.Context) {
 	var items []model.IceCreamItem
-	idStore := c.Param("id")
-	var store model.Store
-	err := controller.db.First(&store, idStore).Error
+	id, err := strconv.Atoi(c.Param("id"))
+
 	if err != nil {
-		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var storeDao database.StoreDao = controller.dao
+
+	items, err = storeDao.GetItemInStore(id)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Non store exist with id!"})
 		return
 	}
 
-	controller.db.Model(&store).Related(&items, "IceCreamItems")
 	c.JSON(http.StatusOK, items)
 }
 
@@ -62,6 +88,7 @@ func (controller *Controller) GetStoresAroundHere(c *gin.Context) {
 	var stores []model.Store
 
 	if err := c.ShouldBindJSON(&coordinates); err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -69,10 +96,17 @@ func (controller *Controller) GetStoresAroundHere(c *gin.Context) {
 	if coordinates.Distance == 0 {
 		coordinates.Distance = 0.02
 	} else {
-		coordinates.Distance = coordinates.Distance / 100
+		coordinates.Distance = coordinates.Distance / 110
 	}
 
-	controller.db.Where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", coordinates.Latitude-coordinates.Distance, coordinates.Latitude+coordinates.Distance, coordinates.Longitude-coordinates.Distance, coordinates.Longitude+coordinates.Distance).Find(&stores)
+	var storeDao database.StoreDao = controller.dao
+	stores, err := storeDao.GetStoreAroundHere(coordinates.Latitude, coordinates.Longitude, coordinates.Distance)
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusOK, stores)
 }
 

@@ -2,6 +2,8 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
+	"vinid_project/database"
 	"vinid_project/model"
 	"vinid_project/utility"
 
@@ -11,25 +13,46 @@ import (
 //Lấy danh sách tất cả các sản phẩm
 func (controller *Controller) GetItems(c *gin.Context) {
 	var items []model.IceCreamItem
-	err := controller.db.Find(&items).Error
+	var itemDao database.ItemDao
+	itemDao = controller.dao
+	items, err := itemDao.FetchItems()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, items)
 }
 
 // Lấy chi tiết một sản phẩm
 func (controller *Controller) DetaiItem(c *gin.Context) {
-	var item []model.IceCreamItem
-	err := controller.db.First(&item, c.Param("id")).Error
+	var dataResponse map[string]interface{}
+	var item model.IceCreamItem
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var itemDao database.ItemDao
+	itemDao = controller.dao
+
+	item, err = itemDao.GetItemByID(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, item)
+	dataResponse = map[string]interface{}{
+		"id":         item.ID,
+		"name":       item.Name,
+		"type":       item.Type,
+		"image_path": item.ImagePath,
+		"price":      item.Price,
+		"created_at": item.CreatedAt,
+	}
+
+	c.JSON(http.StatusOK, dataResponse)
 }
 
 // Lấy hình ảnh của 1 item
@@ -40,19 +63,20 @@ func (controller *Controller) GetItemImage(c *gin.Context) {
 
 // Search item theo text
 func (controller *Controller) SearchItem(c *gin.Context) {
-	var items []model.IceCreamItem
+
 	textSearch := c.Query("text")
 	if textSearch == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "No text search"})
 	} else {
 		textSearch = utility.StringSearchText(textSearch)
-		query := "SELECT * FROM ice_cream_item WHERE MATCH (name,type) AGAINST ('" + textSearch + "' IN BOOLEAN MODE);"
-		err := controller.db.Raw(query).Scan(&items).Error
+		var itemDao database.ItemDao
+		itemDao = controller.dao
+
+		items, err := itemDao.SearchFullTextItem(textSearch)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-
 		c.JSON(http.StatusOK, items)
 	}
 

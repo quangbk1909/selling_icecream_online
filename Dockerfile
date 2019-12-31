@@ -15,7 +15,7 @@ COPY go.mod go.sum ./
 RUN go mod download 
 
 # Copy the source from the current directory to the working Directory inside the container 
-COPY . .
+COPY . /app
 
 # Build the Go app
 RUN go build -o main .
@@ -24,17 +24,18 @@ RUN go build -o main .
 # RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 # # Start a new stage from scratch
-# FROM alpine:latest
+FROM alpine:latest
 # RUN apk --no-cache add ca-certificates
 
-# WORKDIR /root/
+WORKDIR /app
 
 # # Copy the Pre-built binary file from the previous stage. Observe we also copied the .env file
-# COPY --from=builder /app/main .
-# COPY --from=builder /app/.env .    
+COPY --from=builder /app/main .
+COPY --from=builder /app/config.json .    
+COPY --from=builder /app/resources ./resources
 
 # Expose port 8080 to the outside world
 EXPOSE 8080
 
 #Command to run the executable
-CMD ["./main"]
+CMD ["/app/main"]

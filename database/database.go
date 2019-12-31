@@ -20,6 +20,16 @@ type Config struct {
 	Database `json:"database"`
 }
 
+type Dao struct {
+	db *gorm.DB
+}
+
+func NewDao(db *gorm.DB) *Dao {
+	return &Dao{
+		db: db,
+	}
+}
+
 func SetConfig() Config {
 	//doc file config local
 	configFile, err := os.Open("./config.json")

@@ -36,8 +36,9 @@ type Rating struct {
 type Order struct {
 	ID            int            `json:"id"`
 	UserID        int            `json:"user_id"`
+	Status        int            `json:"status"`
+	TotalFee      int            `json:"total_fee"`
 	CreatedAt     string         `json:"created_at"`
-	User          User           `gorm:"foreignkey:UserID"`
 	IceCreamItems []IceCreamItem `gorm:"many2many:order_item"`
 }
 
