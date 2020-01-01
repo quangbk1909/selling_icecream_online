@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 	"vinid_project/database"
 	"vinid_project/model"
+	"vinid_project/utility"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,11 +23,12 @@ func (controller *Controller) GetStores(c *gin.Context) {
 
 	stores, err := storeDao.FetchStore()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		message := "Internal server error. Database error!"
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, message, nil))
 		return
 	}
 
-	c.JSON(http.StatusOK, stores)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", stores))
 }
 
 // Lấy thông tin chi tiết 1 cửa hàng
@@ -37,7 +38,7 @@ func (controller *Controller) DetaiStore(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
 		return
 	}
 
@@ -45,7 +46,8 @@ func (controller *Controller) DetaiStore(c *gin.Context) {
 	store, err = storeDao.GetStoreByID(id)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		message := "Non store exist with id!"
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(404, message, nil))
 		return
 	}
 	dataResponse = map[string]interface{}{
@@ -58,7 +60,7 @@ func (controller *Controller) DetaiStore(c *gin.Context) {
 		"created_at": store.CreatedAt,
 	}
 
-	c.JSON(http.StatusOK, dataResponse)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", dataResponse))
 }
 
 // Lấy các items trong 1 cửa hàng
@@ -67,7 +69,7 @@ func (controller *Controller) GetItemInStore(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
 		return
 	}
 
@@ -75,11 +77,12 @@ func (controller *Controller) GetItemInStore(c *gin.Context) {
 
 	items, err = storeDao.GetItemInStore(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Non store exist with id!"})
+		message := "Non store exist with id!"
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, message, nil))
 		return
 	}
 
-	c.JSON(http.StatusOK, items)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", items))
 }
 
 // Tìm cửa hàng xung quanh đây
@@ -88,8 +91,7 @@ func (controller *Controller) GetStoresAroundHere(c *gin.Context) {
 	var stores []model.Store
 
 	if err := c.ShouldBindJSON(&coordinates); err != nil {
-		log.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request! Not enough info for request.", nil))
 		return
 	}
 
@@ -102,12 +104,11 @@ func (controller *Controller) GetStoresAroundHere(c *gin.Context) {
 	var storeDao database.StoreDao = controller.dao
 	stores, err := storeDao.GetStoreAroundHere(coordinates.Latitude, coordinates.Longitude, coordinates.Distance)
 	if err != nil {
-		log.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error!", nil))
 		return
 	}
 
-	c.JSON(http.StatusOK, stores)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", stores))
 }
 
 //Lấy hình ảnh của cửa hàng

@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"vinid_project/database"
 	"vinid_project/model"
+	"vinid_project/utility"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +22,7 @@ func (controller *Controller) GetUsers(c *gin.Context) {
 	users, err := userDao.FetchUser()
 	var dataResponse []map[string]interface{}
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error!", nil))
 		return
 	}
 	for _, user := range users {
@@ -35,7 +36,7 @@ func (controller *Controller) GetUsers(c *gin.Context) {
 		})
 	}
 
-	c.JSON(http.StatusOK, dataResponse)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", dataResponse))
 
 }
 
@@ -45,17 +46,39 @@ func (controller *Controller) DetailUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
 		return
 	}
 
 	user, err = userDao.GetUserByID(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Non user exist with the id", nil))
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful", user))
+}
+
+func (controller *Controller) GetOrderOfUser(c *gin.Context) {
+	var orders []model.Order
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
+		return
+	}
+
+	var userDao database.UserDao = controller.dao
+
+	orders, err = userDao.GetOrderOfUser(id)
+	if err != nil {
+		message := "Non orders exist with user id!"
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, message, nil))
+		return
+	}
+
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", orders))
+
 }
 
 func (controller *Controller) TestFile(c *gin.Context) {

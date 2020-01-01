@@ -17,10 +17,10 @@ func (controller *Controller) GetItems(c *gin.Context) {
 	itemDao = controller.dao
 	items, err := itemDao.FetchItems()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error!", nil))
 		return
 	}
-	c.JSON(http.StatusOK, items)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful", items))
 }
 
 // Lấy chi tiết một sản phẩm
@@ -30,7 +30,7 @@ func (controller *Controller) DetaiItem(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
 		return
 	}
 
@@ -39,7 +39,7 @@ func (controller *Controller) DetaiItem(c *gin.Context) {
 
 	item, err = itemDao.GetItemByID(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error!", nil))
 		return
 	}
 
@@ -52,7 +52,7 @@ func (controller *Controller) DetaiItem(c *gin.Context) {
 		"created_at": item.CreatedAt,
 	}
 
-	c.JSON(http.StatusOK, dataResponse)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful", dataResponse))
 }
 
 // Lấy hình ảnh của 1 item
@@ -66,7 +66,7 @@ func (controller *Controller) SearchItem(c *gin.Context) {
 
 	textSearch := c.Query("text")
 	if textSearch == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "No text search"})
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "No text search!", nil))
 	} else {
 		textSearch = utility.StringSearchText(textSearch)
 		var itemDao database.ItemDao
@@ -74,10 +74,10 @@ func (controller *Controller) SearchItem(c *gin.Context) {
 
 		items, err := itemDao.SearchFullTextItem(textSearch)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error", nil))
 			return
 		}
-		c.JSON(http.StatusOK, items)
+		c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", items))
 	}
 
 }

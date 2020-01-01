@@ -11,6 +11,7 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 	{
 		userR.GET("", c.GetUsers)
 		userR.GET("/:id", c.DetailUser)
+		userR.GET("/:id/orders", c.GetOrderOfUser)
 		//userR.POST("/:id/deposit".c.Deposit)
 
 	}
@@ -32,8 +33,8 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 
 	orderR := r.Group("/orders")
 	{
-		// orderR.GET("", c.GetItems)
-		// orderR.GET("/:id", c.DetaiItem)
+		//orderR.GET("", c.GetItems)
+		orderR.GET("/:id", c.DetaiOrder)
 		orderR.POST("", c.CreatOrder)
 
 	}

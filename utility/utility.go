@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"vinid_project/model"
 )
 
 func DecodeDataFromJsonFile(f *os.File, data interface{}) error {
@@ -30,5 +31,17 @@ func StringSearchText(text string) string {
 		text = strings.ReplaceAll(text, "Kem", "")
 		return text
 	}
+}
+
+func MakeResponse(statusCode int, message string, data interface{}) model.ResponseForm {
+	var response model.ResponseForm
+	var metaDataRes model.MetaDataResponse
+	metaDataRes.Code = statusCode
+	metaDataRes.Message = message
+
+	response.Data = data
+	response.Meta = metaDataRes
+
+	return response
 
 }
