@@ -3,17 +3,64 @@ package controller
 import (
 	"net/http"
 	"strconv"
+	"vinid_project/authentication"
 	"vinid_project/database"
 	"vinid_project/model"
 	"vinid_project/utility"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/gin-gonic/gin"
 )
 
-type UserAuthicationJson struct {
+type RegisterJson struct {
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
 }
+
+// Register new user
+func (controller *Controller) Register(c *gin.Context) {
+	var registerJson RegisterJson
+
+	if err := c.ShouldBindJSON(&registerJson); err != nil {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Not enough info to register", nil))
+		return
+	}
+
+	var userDao database.UserDao = controller.dao
+	if userDao.CheckUserExistByPhone(registerJson.PhoneNumber) {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Phone number already exist!", nil))
+		return
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(registerJson.Password), bcrypt.MinCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error", nil))
+		return
+	}
+	registerJson.Password = string(hash)
+
+	user := model.User{
+		PhoneNumber: registerJson.PhoneNumber,
+		Password:    registerJson.Password,
+	}
+
+	_, err = userDao.Store(&user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error", nil))
+		return
+	}
+
+	token, err := authentication.MakeJWT(user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error. Login again to continue!", nil))
+		return
+	}
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Register successful!", gin.H{"token": token}))
+
+}
+
+//Make jwt token
 
 func (controller *Controller) GetUsers(c *gin.Context) {
 	var users []model.User

@@ -7,6 +7,9 @@ import (
 )
 
 func InitRoute(r *gin.Engine, c *controller.Controller) {
+
+	r.POST("/register", c.Register)
+
 	userR := r.Group("/users")
 	{
 		userR.GET("", c.GetUsers)

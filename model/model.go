@@ -1,5 +1,7 @@
 package model
 
+const SecretKey string = "saomabietduoc"
+
 type User struct {
 	ID          int    `json:"id"`
 	FullName    string `json:"full_name"`
