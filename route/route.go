@@ -1,6 +1,7 @@
 package route
 
 import (
+	"vinid_project/authentication"
 	"vinid_project/controller"
 
 	"github.com/gin-gonic/gin"
@@ -9,13 +10,14 @@ import (
 func InitRoute(r *gin.Engine, c *controller.Controller) {
 
 	r.POST("/register", c.Register)
+	r.POST("/login", c.Login)
 
 	userR := r.Group("/users")
 	{
 		userR.GET("", c.GetUsers)
 		userR.GET("/:id", c.DetailUser)
 		userR.GET("/:id/orders", c.GetOrderOfUser)
-		//userR.POST("/:id/deposit".c.Deposit)
+		userR.PUT("/:id", c.UpdateInfo)
 
 	}
 
@@ -48,7 +50,9 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 		searchR.GET("/store", c.SearchStore)
 	}
 
-	r.GET("ping", c.TestController)
+	r.GET("/ping", authentication.AuthMiddleware(), func(c *gin.Context) {
+		c.JSON(200, c.GetInt("userID"))
+	})
 
 	r.GET("/resources/store_images/:name", c.GetStoreImage)
 	r.GET("/resources/item_images/:name", c.GetItemImage)

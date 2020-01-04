@@ -106,3 +106,13 @@ type OrderJson struct {
 	TotalFee int             `json:"total_fee"`
 	Items    []ItemOrderJson `json:"items"`
 }
+
+type AuthenticationJson struct {
+	PhoneNumber string `json:"phone_number" binding:"required"`
+	Password    string `json:"password" binding:"required"`
+}
+
+type UserInfoJson struct {
+	FullName string `json:"full_name"`
+	Address  string `json:"address"`
+}

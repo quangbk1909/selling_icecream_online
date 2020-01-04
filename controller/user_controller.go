@@ -13,14 +13,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type RegisterJson struct {
-	PhoneNumber string `json:"phone_number"`
-	Password    string `json:"password"`
-}
-
-// Register new user
 func (controller *Controller) Register(c *gin.Context) {
-	var registerJson RegisterJson
+	var registerJson model.AuthenticationJson
 
 	if err := c.ShouldBindJSON(&registerJson); err != nil {
 		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Not enough info to register", nil))
@@ -60,7 +54,40 @@ func (controller *Controller) Register(c *gin.Context) {
 
 }
 
-//Make jwt token
+func (controller *Controller) UpdateInfo(c *gin.Context) {
+	//var user model.User
+	var userInfoJson model.UserInfoJson
+	if err := c.ShouldBindJSON(&userInfoJson); err != nil {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "There is no data to update!", nil))
+		return
+	}
+
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Update user info successful!", userInfoJson))
+}
+
+func (controller *Controller) Login(c *gin.Context) {
+	var authenticationJson model.AuthenticationJson
+	if err := c.ShouldBindJSON(&authenticationJson); err != nil {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Authenticate fail!", nil))
+		return
+	}
+
+	var userDao database.UserDao = controller.dao
+
+	user, err := userDao.Authenticate(authenticationJson)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, utility.MakeResponse(401, err.Error(), nil))
+		return
+	}
+
+	token, err := authentication.MakeJWT(user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error. Login again to continue!", nil))
+		return
+	}
+
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Authenticate success!", gin.H{"user": user, "token": token}))
+}
 
 func (controller *Controller) GetUsers(c *gin.Context) {
 	var users []model.User
