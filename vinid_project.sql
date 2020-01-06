@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 30, 2019 lúc 03:31 AM
+-- Thời gian đã tạo: Th1 06, 2020 lúc 05:58 AM
 -- Phiên bản máy phục vụ: 10.4.10-MariaDB
 -- Phiên bản PHP: 7.3.12
 
@@ -32,7 +32,6 @@ CREATE TABLE `ice_cream_item` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
-  `image_path` varchar(255) NOT NULL,
   `price` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -41,37 +40,147 @@ CREATE TABLE `ice_cream_item` (
 -- Đang đổ dữ liệu cho bảng `ice_cream_item`
 --
 
-INSERT INTO `ice_cream_item` (`id`, `name`, `type`, `image_path`, `price`, `created_at`) VALUES
-(1, 'Kem ốc quế cao cấp Celano', 'Kem ốc quế', '/resources/item_images/1.png', 10, '2019-12-26 09:05:44'),
-(2, 'Kem ốc quế dâu nam việt quất Delight', 'Kem ốc quế', '/resources/item_images/2.png', 12, '2019-12-26 11:02:38'),
-(3, 'Kem ốc quế - McDonald\'s™ Vietnam', 'Kem ốc quế', '/resources/item_images/3.png', 15, '2019-12-27 14:45:19'),
-(4, 'Kem ốc quế Dâu – Kem Mingo Thái Lan', 'Kem ốc quế', '/resources/item_images/4.png', 15, '2019-12-27 14:46:50'),
-(5, 'Kem ốc quế celano socola extra 130g - Sun Wall', 'Kem ốc quế', '/resources/item_images/5.png', 12, '2019-12-27 14:47:27'),
-(6, 'Kem ốc quế Merino', 'Kem ốc quế', '/resources/item_images/6.png', 10, '2019-12-27 14:48:46'),
-(7, 'Kem ốc quế Celano hạt dẻ 125ml/16', 'Kem ốc quế', '/resources/item_images/7.png', 15, '2019-12-27 14:49:31'),
-(8, 'KEM ỐC QUẾ CRUNDY – COCOGO - 10 CHÈ', 'Kem ốc quế', '/resources/item_images/8.png', 8, '2019-12-27 14:50:03'),
-(9, 'Kem ốc quế KitKat trà xanh ', 'Kem ốc quế', '/resources/item_images/9.png', 8, '2019-12-27 14:50:35'),
-(10, 'Kem Ốc Quế Zòn Hùng Linh Vị Khoai Môn', 'Kem ốc quế', '/resources/item_images/10.png', 8, '2019-12-27 14:51:20'),
-(11, 'Kem que Merino X - KIDO', 'Kem que', '/resources/item_images/11.png', 10, '2019-12-27 14:51:58'),
-(12, 'Kem Que Cà Phê – Phủ Chocolate – Kem Mingo Thái Lan', 'Kem que', '/resources/item_images/12.png', 8, '2019-12-27 14:52:39'),
-(13, 'Kem que Helio vị dâu', 'Kem que', '/resources/item_images/13.png', 8, '2019-12-27 14:53:29'),
-(14, 'Kem que cao cấp Celano Passion - KIDO', 'Kem que', '/resources/item_images/14.png', 12, '2019-12-27 14:54:03'),
-(15, 'Kem Que Hương Vanilla Tự Nhiên', 'Kem que', '/resources/item_images/15.png', 12, '2019-12-27 14:54:35'),
-(16, 'Kem que Đậu xanh Sữa dừa', 'Kem que', '/resources/item_images/16.png', 7, '2019-12-27 14:56:02'),
-(17, 'Kem Que Yeah Cacao Socola', 'Kem que', '/resources/item_images/17.png', 8, '2019-12-27 14:56:31'),
-(18, 'Kem Que Cốm', 'Kem que', '/resources/item_images/18.png', 15, '2019-12-27 14:57:05'),
-(19, 'Kem que sữa – sầu riêng – Kem Mingo Thái Lan', 'Kem que', '/resources/item_images/19.png', 12, '2019-12-27 14:57:59'),
-(20, 'Kem que trái cây Zòn vị Chanh leo', 'Kem que', '/resources/item_images/20.png', 8, '2019-12-27 14:58:36'),
-(21, 'Kem Hộp Vinamilk Vani - Hộp 450ml', 'Kem hộp', '/resources/item_images/21.png', 40, '2019-12-27 14:59:20'),
-(22, 'Kem Hộp Vinamilk Sôcôla - Hộp 450ml', 'Kem hộp', '/resources/item_images/22.png', 40, '2019-12-27 15:00:22'),
-(23, 'Kem hộp Celano Socola 800ml', 'Kem hộp', '/resources/item_images/23.png', 40, '2019-12-27 15:00:55'),
-(24, 'Kem Häagen-Dazs vị bánh quy kem hộp nhỏ 100ml', 'Kem hộp', '/resources/item_images/24.png', 15, '2019-12-27 15:01:44'),
-(25, 'Kem Häagen-Dazs vị Việt quất & Kem tươi hộp vừa 473ml', 'Kem hộp', '/resources/item_images/25.png', 45, '2019-12-27 15:02:16'),
-(26, 'Kem hộp cao cấp Celano - KIDO', 'Kem hộp', '/resources/item_images/26.png', 40, '2019-12-27 15:02:46'),
-(27, 'Kem Thiên Lý - Hộp 500ml Hoặc 5 Hộp Loại 100ml', 'Kem hộp', '/resources/item_images/27.png', 40, '2019-12-27 15:03:31'),
-(28, 'Kem sô cô la Vinamilk hộp 55g/100ml', 'Kem hộp', '/resources/item_images/28.png', 45, '2019-12-27 15:04:09'),
-(29, 'Kem hộp 1000ml/ 450g vị vani dâu', 'Kem hộp', '/resources/item_images/29.png', 45, '2019-12-27 15:04:32'),
-(30, 'Kem hộp Quiches cao cấp 900ml', 'Kem hộp', '/resources/item_images/30.png', 70, '2019-12-27 15:05:30');
+INSERT INTO `ice_cream_item` (`id`, `name`, `type`, `price`, `created_at`) VALUES
+(1, 'Kem ốc quế cao cấp Celano', 'Kem ốc quế', 10, '2019-12-26 09:05:44'),
+(2, 'Kem ốc quế dâu nam việt quất Delight', 'Kem ốc quế', 12, '2019-12-26 11:02:38'),
+(3, 'Kem ốc quế - McDonald\'s™ Vietnam', 'Kem ốc quế', 15, '2019-12-27 14:45:19'),
+(4, 'Kem ốc quế Dâu – Kem Mingo Thái Lan', 'Kem ốc quế', 15, '2019-12-27 14:46:50'),
+(5, 'Kem ốc quế celano socola extra 130g - Sun Wall', 'Kem ốc quế', 12, '2019-12-27 14:47:27'),
+(6, 'Kem ốc quế Merino', 'Kem ốc quế', 10, '2019-12-27 14:48:46'),
+(7, 'Kem ốc quế Celano hạt dẻ 125ml/16', 'Kem ốc quế', 15, '2019-12-27 14:49:31'),
+(8, 'KEM ỐC QUẾ CRUNDY – COCOGO - 10 CHÈ', 'Kem ốc quế', 8, '2019-12-27 14:50:03'),
+(9, 'Kem ốc quế KitKat trà xanh ', 'Kem ốc quế', 8, '2019-12-27 14:50:35'),
+(10, 'Kem Ốc Quế Zòn Hùng Linh Vị Khoai Môn', 'Kem ốc quế', 8, '2019-12-27 14:51:20'),
+(11, 'Kem que Merino X - KIDO', 'Kem que', 10, '2019-12-27 14:51:58'),
+(12, 'Kem Que Cà Phê – Phủ Chocolate – Kem Mingo Thái Lan', 'Kem que', 8, '2019-12-27 14:52:39'),
+(13, 'Kem que Helio vị dâu', 'Kem que', 8, '2019-12-27 14:53:29'),
+(14, 'Kem que cao cấp Celano Passion - KIDO', 'Kem que', 12, '2019-12-27 14:54:03'),
+(15, 'Kem Que Hương Vanilla Tự Nhiên', 'Kem que', 12, '2019-12-27 14:54:35'),
+(16, 'Kem que Đậu xanh Sữa dừa', 'Kem que', 7, '2019-12-27 14:56:02'),
+(17, 'Kem Que Yeah Cacao Socola', 'Kem que', 8, '2019-12-27 14:56:31'),
+(18, 'Kem Que Cốm', 'Kem que', 15, '2019-12-27 14:57:05'),
+(19, 'Kem que sữa – sầu riêng – Kem Mingo Thái Lan', 'Kem que', 12, '2019-12-27 14:57:59'),
+(20, 'Kem que trái cây Zòn vị Chanh leo', 'Kem que', 8, '2019-12-27 14:58:36'),
+(21, 'Kem Hộp Vinamilk Vani - Hộp 450ml', 'Kem hộp', 40, '2019-12-27 14:59:20'),
+(22, 'Kem Hộp Vinamilk Sôcôla - Hộp 450ml', 'Kem hộp', 40, '2019-12-27 15:00:22'),
+(23, 'Kem hộp Celano Socola 800ml', 'Kem hộp', 40, '2019-12-27 15:00:55'),
+(24, 'Kem Häagen-Dazs vị bánh quy kem hộp nhỏ 100ml', 'Kem hộp', 15, '2019-12-27 15:01:44'),
+(25, 'Kem Häagen-Dazs vị Việt quất & Kem tươi hộp vừa 473ml', 'Kem hộp', 45, '2019-12-27 15:02:16'),
+(26, 'Kem hộp cao cấp Celano - KIDO', 'Kem hộp', 40, '2019-12-27 15:02:46'),
+(27, 'Kem Thiên Lý - Hộp 500ml Hoặc 5 Hộp Loại 100ml', 'Kem hộp', 40, '2019-12-27 15:03:31'),
+(28, 'Kem sô cô la Vinamilk hộp 55g/100ml', 'Kem hộp', 45, '2019-12-27 15:04:09'),
+(29, 'Kem hộp 1000ml/ 450g vị vani dâu', 'Kem hộp', 45, '2019-12-27 15:04:32'),
+(30, 'Kem hộp Quiches cao cấp 900ml', 'Kem hộp', 70, '2019-12-27 15:05:30');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `item_image`
+--
+
+CREATE TABLE `item_image` (
+  `id` int(11) NOT NULL,
+  `ice_cream_item_id` int(11) NOT NULL,
+  `image_path` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `item_image`
+--
+
+INSERT INTO `item_image` (`id`, `ice_cream_item_id`, `image_path`) VALUES
+(5, 2, 'http://35.198.221.214:8080/resources/item_images/2.png'),
+(6, 2, 'http://35.198.221.214:8080/resources/item_images/2_1.png'),
+(7, 2, 'http://35.198.221.214:8080/resources/item_images/2_2.png'),
+(8, 2, 'http://35.198.221.214:8080/resources/item_images/2_3.png'),
+(9, 3, 'http://35.198.221.214:8080/resources/item_images/3.png'),
+(10, 3, 'http://35.198.221.214:8080/resources/item_images/3_1.png'),
+(11, 3, 'http://35.198.221.214:8080/resources/item_images/3_2.png'),
+(12, 4, 'http://35.198.221.214:8080/resources/item_images/4.png'),
+(13, 4, 'http://35.198.221.214:8080/resources/item_images/4_1.png'),
+(14, 5, 'http://35.198.221.214:8080/resources/item_images/5.png'),
+(15, 5, 'http://35.198.221.214:8080/resources/item_images/5_1.png'),
+(16, 5, 'http://35.198.221.214:8080/resources/item_images/5_2.png'),
+(17, 6, 'http://35.198.221.214:8080/resources/item_images/6.png'),
+(18, 6, 'http://35.198.221.214:8080/resources/item_images/6_1.png'),
+(19, 7, 'http://35.198.221.214:8080/resources/item_images/7.png'),
+(20, 7, 'http://35.198.221.214:8080/resources/item_images/7_1.png'),
+(21, 7, 'http://35.198.221.214:8080/resources/item_images/7_2.png'),
+(22, 8, 'http://35.198.221.214:8080/resources/item_images/8.png'),
+(23, 8, 'http://35.198.221.214:8080/resources/item_images/8_1.png'),
+(24, 8, 'http://35.198.221.214:8080/resources/item_images/8_2.png'),
+(25, 8, 'http://35.198.221.214:8080/resources/item_images/8_2.png'),
+(26, 9, 'http://35.198.221.214:8080/resources/item_images/9.png'),
+(27, 9, 'http://35.198.221.214:8080/resources/item_images/9_1.png'),
+(28, 9, 'http://35.198.221.214:8080/resources/item_images/9_2.png'),
+(29, 10, 'http://35.198.221.214:8080/resources/item_images/10.png'),
+(30, 10, 'http://35.198.221.214:8080/resources/item_images/10_1.png'),
+(31, 11, 'http://35.198.221.214:8080/resources/item_images/11.png'),
+(32, 11, 'http://35.198.221.214:8080/resources/item_images/11_1.png'),
+(33, 11, 'http://35.198.221.214:8080/resources/item_images/11_2.png'),
+(34, 11, 'http://35.198.221.214:8080/resources/item_images/11_3.png'),
+(35, 12, 'http://35.198.221.214:8080/resources/item_images/12.png'),
+(36, 12, 'http://35.198.221.214:8080/resources/item_images/12_1.png'),
+(37, 12, 'http://35.198.221.214:8080/resources/item_images/12_2.png'),
+(38, 13, 'http://35.198.221.214:8080/resources/item_images/13.png'),
+(39, 13, 'http://35.198.221.214:8080/resources/item_images/13_1.png'),
+(40, 13, 'http://35.198.221.214:8080/resources/item_images/13_2.png'),
+(41, 14, 'http://35.198.221.214:8080/resources/item_images/14.png'),
+(42, 14, 'http://35.198.221.214:8080/resources/item_images/14_1.png'),
+(43, 14, 'http://35.198.221.214:8080/resources/item_images/14_2.png'),
+(44, 15, 'http://35.198.221.214:8080/resources/item_images/15.png'),
+(45, 15, 'http://35.198.221.214:8080/resources/item_images/15_1.png'),
+(46, 15, 'http://35.198.221.214:8080/resources/item_images/15_2.png'),
+(47, 16, 'http://35.198.221.214:8080/resources/item_images/16.png'),
+(48, 16, 'http://35.198.221.214:8080/resources/item_images/16_1.png'),
+(49, 16, 'http://35.198.221.214:8080/resources/item_images/16_2.png'),
+(50, 16, 'http://35.198.221.214:8080/resources/item_images/16_3.png'),
+(51, 17, 'http://35.198.221.214:8080/resources/item_images/17.png'),
+(52, 17, 'http://35.198.221.214:8080/resources/item_images/17_1.png'),
+(53, 17, 'http://35.198.221.214:8080/resources/item_images/17_2.png'),
+(54, 17, 'http://35.198.221.214:8080/resources/item_images/17_3.png'),
+(55, 18, 'http://35.198.221.214:8080/resources/item_images/18.png'),
+(56, 18, 'http://35.198.221.214:8080/resources/item_images/18_1.png'),
+(57, 18, 'http://35.198.221.214:8080/resources/item_images/18_2.png'),
+(58, 19, 'http://35.198.221.214:8080/resources/item_images/19.png'),
+(59, 19, 'http://35.198.221.214:8080/resources/item_images/19_1.png'),
+(60, 20, 'http://35.198.221.214:8080/resources/item_images/20.png'),
+(61, 20, 'http://35.198.221.214:8080/resources/item_images/20_1.png'),
+(62, 20, 'http://35.198.221.214:8080/resources/item_images/20_2.png'),
+(63, 21, 'http://35.198.221.214:8080/resources/item_images/21.png'),
+(64, 21, 'http://35.198.221.214:8080/resources/item_images/21_1.png'),
+(65, 21, 'http://35.198.221.214:8080/resources/item_images/21_2.png'),
+(66, 22, 'http://35.198.221.214:8080/resources/item_images/22.png'),
+(67, 22, 'http://35.198.221.214:8080/resources/item_images/22_1.png'),
+(68, 22, 'http://35.198.221.214:8080/resources/item_images/22_2.png'),
+(69, 23, 'http://35.198.221.214:8080/resources/item_images/23.png'),
+(70, 23, 'http://35.198.221.214:8080/resources/item_images/23_1.png'),
+(71, 23, 'http://35.198.221.214:8080/resources/item_images/23_2.png'),
+(72, 24, 'http://35.198.221.214:8080/resources/item_images/24.png'),
+(73, 24, 'http://35.198.221.214:8080/resources/item_images/24_1.png'),
+(74, 24, 'http://35.198.221.214:8080/resources/item_images/24_2.png'),
+(75, 25, 'http://35.198.221.214:8080/resources/item_images/25.png'),
+(76, 25, 'http://35.198.221.214:8080/resources/item_images/25_1.png'),
+(77, 25, 'http://35.198.221.214:8080/resources/item_images/25_2.png'),
+(78, 25, 'http://35.198.221.214:8080/resources/item_images/25_3.png'),
+(79, 26, 'http://35.198.221.214:8080/resources/item_images/26.png'),
+(80, 26, 'http://35.198.221.214:8080/resources/item_images/26_1.png'),
+(81, 26, 'http://35.198.221.214:8080/resources/item_images/26_2.png'),
+(82, 27, 'http://35.198.221.214:8080/resources/item_images/27.png'),
+(83, 27, 'http://35.198.221.214:8080/resources/item_images/27_1.png'),
+(84, 27, 'http://35.198.221.214:8080/resources/item_images/27_2.png'),
+(85, 28, 'http://35.198.221.214:8080/resources/item_images/28.png'),
+(86, 28, 'http://35.198.221.214:8080/resources/item_images/28_1.png'),
+(87, 28, 'http://35.198.221.214:8080/resources/item_images/28_2.png'),
+(88, 29, 'http://35.198.221.214:8080/resources/item_images/29.png'),
+(89, 29, 'http://35.198.221.214:8080/resources/item_images/29_1.png'),
+(90, 29, 'http://35.198.221.214:8080/resources/item_images/29_2.png'),
+(91, 30, 'http://35.198.221.214:8080/resources/item_images/30.png'),
+(92, 30, 'http://35.198.221.214:8080/resources/item_images/30_1.png'),
+(93, 1, 'http://35.198.221.214:8080/resources/item_images/1.png'),
+(94, 1, 'http://35.198.221.214:8080/resources/item_images/1_1.png'),
+(95, 1, 'http://35.198.221.214:8080/resources/item_images/1_2.png'),
+(96, 1, 'http://35.198.221.214:8080/resources/item_images/1_3.png');
 
 -- --------------------------------------------------------
 
@@ -1391,15 +1500,18 @@ INSERT INTO `item_store` (`id`, `ice_cream_item_id`, `store_id`, `status`) VALUE
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `status` tinyint(4) NOT NULL,
+  `total_fee` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `order`
 --
 
-INSERT INTO `order` (`id`, `user_id`, `created_at`) VALUES
-(1, 1, '2019-12-26 09:06:15');
+INSERT INTO `order` (`id`, `user_id`, `status`, `total_fee`, `created_at`) VALUES
+(1, 1, 1, 0, '2020-01-01 15:26:26'),
+(5, 1, 1, 20, '2020-01-01 15:43:19');
 
 -- --------------------------------------------------------
 
@@ -1420,7 +1532,10 @@ CREATE TABLE `order_item` (
 
 INSERT INTO `order_item` (`id`, `order_id`, `ice_cream_item_id`, `quantity`) VALUES
 (1, 1, 1, 3),
-(2, 1, 2, 2);
+(2, 1, 2, 2),
+(9, 5, 1, 2),
+(10, 5, 2, 2),
+(11, 5, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -1446,7 +1561,7 @@ CREATE TABLE `rating` (
 CREATE TABLE `store` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `image_path` varchar(50) NOT NULL,
+  `image_path` varchar(100) NOT NULL,
   `address` varchar(255) NOT NULL,
   `latitude` decimal(20,10) NOT NULL,
   `longitude` decimal(20,10) NOT NULL,
@@ -1458,49 +1573,49 @@ CREATE TABLE `store` (
 --
 
 INSERT INTO `store` (`id`, `name`, `image_path`, `address`, `latitude`, `longitude`, `created_at`) VALUES
-(1, 'VinMart+', '/resources/store_images/1.png', 'Nhà No9 KĐT, Pháp Vân, Hoàng Ma,Hà Nội', '20.9588310000', '105.8467490000', '2019-12-27 12:24:21'),
-(2, 'Vinmart+', '/resources/store_images/2.png', 'Ô 13, khu, Ngõ 2 - Hoàng Liệt, Hoàng Liệt, Hoàng Mai, Hà Nội', '20.9666340000', '105.8376770000', '2019-12-27 12:27:10'),
-(3, 'Vinmart+', '/resources/store_images/3.png', 'Ô số 13A, lô Ơ2, bán đảo, Khu đô thị Linh Đàm, Hoàng Mai, Hà Nội', '20.9676220000', '105.8333100000', '2019-12-27 12:30:30'),
-(4, 'Vinmart+', '/resources/store_images/4.png', 'Nguyễn Duy Trinh, Khu đô thị Linh Đàm, Hoàng Mai, Hà Nội', '20.9641100000', '105.8318960000', '2019-12-27 12:32:13'),
-(5, 'Vinmart+', '/resources/store_images/5.png', 'Toàn Nhà Hud 3, Linh Đàm, Hoàng Liệt, Thanh Xuân, Hà Nội', '20.9645230000', '105.8250960000', '2019-12-27 12:36:55'),
-(6, 'Vinmart+', '/resources/store_images/6.png', 'Số 10, ngõ 15 phố Bằng Liệt, Tây Nam Linh Đàm, Hoàng Mai, Hà Nội', '20.9646810000', '105.8208780000', '2019-12-27 12:45:49'),
-(7, 'Vinmart+', '/resources/store_images/7.png', '182 Đại Từ, Đại Kim, Hoàng Mai, Hà Nội', '20.9713430000', '105.8335200000', '2019-12-27 12:46:38'),
-(8, 'Vinmart+', '/resources/store_images/8.png', '18 Cầu Dậu, huyện Thanh Trì, Thanh Trì, Thanh Trì Hà Nội', '20.9693050000', '105.8236250000', '2019-12-27 12:47:45'),
-(9, 'Vinmart+', '/resources/store_images/9.png', '532 Đ. Kim Giang, Thanh Liệt, Thanh Trì, Hà Nội', '20.9691560000', '105.8234840000', '2019-12-27 12:48:32'),
-(10, 'Vinmart+', '/resources/store_images/10.png', 'Số 19 ngõ 42 phố, Thịnh Liệt, Hoàng Mai, Hà Nội', '20.9739070000', '105.8457300000', '2019-12-27 12:49:53'),
-(11, 'Vinmart+', '/resources/store_images/11.png', 'chung cư, Tầng 1, đường Vũ Tông Phan, Đại Kim, Hoàng Mai, Hà Nội', '20.9755850000', '105.8255910000', '2019-12-27 12:51:02'),
-(12, 'Vinmart+', '/resources/store_images/12.png', '100 Ngõ 168 Đường Kim Giang, Đại Kim, Thanh Xuân, Hà Nội', '20.9793400000', '105.8156630000', '2019-12-27 12:52:53'),
-(13, 'Vinmart+', '/resources/store_images/13.png', 'Số 142 - Kim Giang - Hoàng Mai - Hà Nội, Kim Giang - Ngõ 142 Ngõ 168 Đường Kim Giang, Đại Kim, Hoàng Mai, Hà Nội', '20.9809850000', '105.8178850000', '2019-12-27 12:54:01'),
-(14, 'Vinmart+', '/resources/store_images/14.png', '639 Vũ Tông Phan, Khương Đình, Thanh Xuân, Hà Nội', '20.9828780000', '105.8165920000', '2019-12-27 12:54:49'),
-(15, 'Vinmart+', '/resources/store_images/15.png', 'Ngõ 245 Định Công, Định Công, Thanh Xuân, Hà Nội', '20.9811160000', '105.8334550000', '2019-12-27 12:55:51'),
-(16, 'Vinmart+', '/resources/store_images/1.png', '261, Tân Mai, Quận Hoàng Mai, Thành Phố Hà Nội, Tân Mai, Hoàng Mai, Hà Nội', '20.9838990000', '105.8508880000', '2019-12-27 12:58:19'),
-(17, 'Vinmart+', '/resources/store_images/2.png', '589 Trương Định, Giáp Bát, Hai Bà Trưng, Hà Nội', '20.9814760000', '105.8454340000', '2019-12-27 13:00:09'),
-(18, 'Vinmart+', '/resources/store_images/3.png', '1 Kim Đồng, Giáp Bát, Hoàng Mai, Hà Nội', '20.9835140000', '105.8437820000', '2019-12-27 13:01:25'),
-(19, 'Vinmart+', '/resources/store_images/4.png', 'Tòa nhà Tiến Phú, Hoàng Văn Thụ, Hoàng Mai, Hà Nội', '20.9837550000', '105.8665080000', '2019-12-27 13:02:24'),
-(20, 'Vinmart+', '/resources/store_images/5.png', '59 Đền Lừ 2, Hoàng Văn Thụ, Hoàng Mai, Hà Nội', '20.9860900000', '105.8578210000', '2019-12-27 13:03:31'),
-(21, 'Vinmart+', '/resources/store_images/6.png', '55A Ngõ 1 Mai Động, Mai Động, Hoàng Mai, Hà Nội', '20.9917770000', '105.8625340000', '2019-12-27 13:05:07'),
-(22, 'Vinmart+', '/resources/store_images/7.png', '33 Lương Khánh Thiện, Tương Mai, Hoàng Mai, Hà Nội', '20.9862590000', '105.8510130000', '2019-12-27 13:06:08'),
-(23, 'Vinmart+', '/resources/store_images/8.png', '62 Nguyễn Đức Cảnh, Tân Mai, Hoàng Mai, Hà Nội', '20.9873080000', '105.8498940000', '2019-12-27 13:07:07'),
-(24, 'Vinmart+', '/resources/store_images/9.png', 'Toà nhà A1, Nguyễn Đức Cảnh, Ngõ 151 Hanoi Hà Nội, ngõ 151 Nguyễn Đức Cảnh, Tương Mai, Hoàng Mai, Hà Nội', '20.9880790000', '105.8517070000', '2019-12-27 13:08:11'),
-(25, 'Vinmart+', '/resources/store_images/10.png', '110 Ngõ 553Giải Phóng, Đường Giáp Bát, Giáp Bát, Hai Bà Trưng, Hà Nội', '20.9901100000', '105.8426610000', '2019-12-27 13:09:35'),
-(26, 'Vinmart+', '/resources/store_images/11.png', '164 Trương Định, Hoàng Mai, Hà Nội', '20.9917000000', '105.8489610000', '2019-12-27 13:10:45'),
-(27, 'Vinmart+', '/resources/store_images/12.png', '194 Phố Minh Khai, Minh Khai, Hai Bà Trưng, Hà Nội', '20.9952770000', '105.8542700000', '2019-12-27 13:11:47'),
-(28, 'Vinmart+', '/resources/store_images/13.png', '91 Vĩnh Hưng, Hoàng Mai, Hà Nội', '20.9859350000', '105.8759850000', '2019-12-27 13:14:02'),
-(29, 'Vinmart+', '/resources/store_images/14.png', '283 Vĩnh Hưng, Hoàng Mai, Hà Nội', '20.9911000000', '105.8789580000', '2019-12-27 13:14:58'),
-(31, 'Vinmart+', '/resources/store_images/1.png', 'Tầng 1 toà Park 6, Khu đô thị Times City, Hai Bà Trưng, Hà Nội', '20.9913360000', '105.8685800000', '2019-12-27 13:18:15'),
-(32, 'Vinmart+', '/resources/store_images/2.png', ' Park 1 Times City, 12, Ngõ 454 Minh Khai, Mai Động, Hai Bà Trưng, Hà Nội', '20.9931760000', '105.8678730000', '2019-12-27 13:19:02'),
-(33, 'Vinmart+', '/resources/store_images/3.png', 'T10, Khu đô thị Times City, Hai Bà Trưng, Hà Nội', '20.9942020000', '105.8685080000', '2019-12-27 13:19:44'),
-(34, 'Vinmart+', '/resources/store_images/4.png', 'L1-03, 458 Phố Minh Khai, Khu đô thị Times City, Hai Bà Trưng, Hà Nội', '20.9961150000', '105.8694090000', '2019-12-27 13:20:29'),
-(35, 'Cửa Hàng Tiện Ích VinMart', '/resources/store_images/5.png', ' 79 phố Dương Văn Bé, Vĩnh Phú, Hai Bà Trưng, Hà Nội', '20.9992190000', '105.8730850000', '2019-12-27 13:21:44'),
-(36, 'Cửa Hàng Vinmart+', '/resources/store_images/6.png', '31 Mạc Thị Bưởi, Vĩnh Tuy, Hai Bà Trưng, Hà Nội', '21.0007330000', '105.8691160000', '2019-12-27 13:22:39'),
-(37, 'Cửa Hàng Vinmart+', '/resources/store_images/7.png', ' số 49B Ngõ 651 - Phố Minh Khai, Thanh Lương, Hai Bà Trưng, Hà Nội', '21.0034800000', '105.8682740000', '2019-12-27 13:23:34'),
-(38, 'Cửa Hàng Vinmart+', '/resources/store_images/8.png', 'Ngõ 230 Lạc Trung, Thanh Lương, Hai Bà Trưng, Hà Nội', '21.0033190000', '105.8667530000', '2019-12-27 13:24:25'),
-(39, 'Vinmart+', '/resources/store_images/9.png', '183 Hồng Mai, Quỳnh Lôi, Hai Bà Trưng, Hà Nội', '20.9989710000', '105.8555200000', '2019-12-27 13:26:49'),
-(40, 'Vinmart+', '/resources/store_images/10.png', '69 Hồng Mai, Trương Định, Hai Bà Trưng, Hà Nội', '21.0010090000', '105.8506770000', '2019-12-27 13:27:53'),
-(41, 'Vinmart+', '/resources/store_images/11.png', '47, 52 ngõ 187 Hồng Mai, Bạch Mai, Hai Bà Trưng, Hà Nội', '21.0004740000', '105.8556570000', '2019-12-27 13:28:51'),
-(42, 'Vinmart+', '/resources/store_images/12.png', '409 Bạch Mai, Hai Bà Trưng, Hà Nội', '21.0013190000', '105.8506990000', '2019-12-27 13:29:48'),
-(43, 'Vinmart+', '/resources/store_images/13.png', '244 Lê Thanh Nghị, Đồng Tâm, Hai Bà Trưng, Hà Nội', '21.0019800000', '105.8424290000', '2019-12-27 13:30:33'),
-(44, 'Vinmart+', '/resources/store_images/14.png', '171 Giải Phóng, Phương Mai, Đống Đa, Hà Nội', '21.0014600000', '105.8413090000', '2019-12-27 13:31:14');
+(1, 'VinMart+', 'http://35.198.221.214:8080/resources/store_images/1.png', 'Nhà No9 KĐT, Pháp Vân, Hoàng Ma,Hà Nội', '20.9588310000', '105.8467490000', '2019-12-27 12:24:21'),
+(2, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/2.png', 'Ô 13, khu, Ngõ 2 - Hoàng Liệt, Hoàng Liệt, Hoàng Mai, Hà Nội', '20.9666340000', '105.8376770000', '2019-12-27 12:27:10'),
+(3, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/3.png', 'Ô số 13A, lô Ơ2, bán đảo, Khu đô thị Linh Đàm, Hoàng Mai, Hà Nội', '20.9676220000', '105.8333100000', '2019-12-27 12:30:30'),
+(4, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/4,png', 'Nguyễn Duy Trinh, Khu đô thị Linh Đàm, Hoàng Mai, Hà Nội', '20.9641100000', '105.8318960000', '2019-12-27 12:32:13'),
+(5, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/5.png', 'Toàn Nhà Hud 3, Linh Đàm, Hoàng Liệt, Thanh Xuân, Hà Nội', '20.9645230000', '105.8250960000', '2019-12-27 12:36:55'),
+(6, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/6.png', 'Số 10, ngõ 15 phố Bằng Liệt, Tây Nam Linh Đàm, Hoàng Mai, Hà Nội', '20.9646810000', '105.8208780000', '2019-12-27 12:45:49'),
+(7, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/7.png', '182 Đại Từ, Đại Kim, Hoàng Mai, Hà Nội', '20.9713430000', '105.8335200000', '2019-12-27 12:46:38'),
+(8, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/8.png', '18 Cầu Dậu, huyện Thanh Trì, Thanh Trì, Thanh Trì Hà Nội', '20.9693050000', '105.8236250000', '2019-12-27 12:47:45'),
+(9, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/9.png', '532 Đ. Kim Giang, Thanh Liệt, Thanh Trì, Hà Nội', '20.9691560000', '105.8234840000', '2019-12-27 12:48:32'),
+(10, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/10.png', 'Số 19 ngõ 42 phố, Thịnh Liệt, Hoàng Mai, Hà Nội', '20.9739070000', '105.8457300000', '2019-12-27 12:49:53'),
+(11, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/11.png', 'chung cư, Tầng 1, đường Vũ Tông Phan, Đại Kim, Hoàng Mai, Hà Nội', '20.9755850000', '105.8255910000', '2019-12-27 12:51:02'),
+(12, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/12.png', '100 Ngõ 168 Đường Kim Giang, Đại Kim, Thanh Xuân, Hà Nội', '20.9793400000', '105.8156630000', '2019-12-27 12:52:53'),
+(13, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/13.png', 'Số 142 - Kim Giang - Hoàng Mai - Hà Nội, Kim Giang - Ngõ 142 Ngõ 168 Đường Kim Giang, Đại Kim, Hoàng Mai, Hà Nội', '20.9809850000', '105.8178850000', '2019-12-27 12:54:01'),
+(14, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/14.png', '639 Vũ Tông Phan, Khương Đình, Thanh Xuân, Hà Nội', '20.9828780000', '105.8165920000', '2019-12-27 12:54:49'),
+(15, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/15.png', 'Ngõ 245 Định Công, Định Công, Thanh Xuân, Hà Nội', '20.9811160000', '105.8334550000', '2019-12-27 12:55:51'),
+(16, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/1.png', '261, Tân Mai, Quận Hoàng Mai, Thành Phố Hà Nội, Tân Mai, Hoàng Mai, Hà Nội', '20.9838990000', '105.8508880000', '2019-12-27 12:58:19'),
+(17, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/2.png', '589 Trương Định, Giáp Bát, Hai Bà Trưng, Hà Nội', '20.9814760000', '105.8454340000', '2019-12-27 13:00:09'),
+(18, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/3.png', '1 Kim Đồng, Giáp Bát, Hoàng Mai, Hà Nội', '20.9835140000', '105.8437820000', '2019-12-27 13:01:25'),
+(19, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/4.png', 'Tòa nhà Tiến Phú, Hoàng Văn Thụ, Hoàng Mai, Hà Nội', '20.9837550000', '105.8665080000', '2019-12-27 13:02:24'),
+(20, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/5.png', '59 Đền Lừ 2, Hoàng Văn Thụ, Hoàng Mai, Hà Nội', '20.9860900000', '105.8578210000', '2019-12-27 13:03:31'),
+(21, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/6.png', '55A Ngõ 1 Mai Động, Mai Động, Hoàng Mai, Hà Nội', '20.9917770000', '105.8625340000', '2019-12-27 13:05:07'),
+(22, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/7.png', '33 Lương Khánh Thiện, Tương Mai, Hoàng Mai, Hà Nội', '20.9862590000', '105.8510130000', '2019-12-27 13:06:08'),
+(23, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/8.png', '62 Nguyễn Đức Cảnh, Tân Mai, Hoàng Mai, Hà Nội', '20.9873080000', '105.8498940000', '2019-12-27 13:07:07'),
+(24, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/9.png', 'Toà nhà A1, Nguyễn Đức Cảnh, Ngõ 151 Hanoi Hà Nội, ngõ 151 Nguyễn Đức Cảnh, Tương Mai, Hoàng Mai, Hà Nội', '20.9880790000', '105.8517070000', '2019-12-27 13:08:11'),
+(25, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/10.png', '110 Ngõ 553Giải Phóng, Đường Giáp Bát, Giáp Bát, Hai Bà Trưng, Hà Nội', '20.9901100000', '105.8426610000', '2019-12-27 13:09:35'),
+(26, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/11.png', '164 Trương Định, Hoàng Mai, Hà Nội', '20.9917000000', '105.8489610000', '2019-12-27 13:10:45'),
+(27, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/12.png', '194 Phố Minh Khai, Minh Khai, Hai Bà Trưng, Hà Nội', '20.9952770000', '105.8542700000', '2019-12-27 13:11:47'),
+(28, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/13.png', '91 Vĩnh Hưng, Hoàng Mai, Hà Nội', '20.9859350000', '105.8759850000', '2019-12-27 13:14:02'),
+(29, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/14.png', '283 Vĩnh Hưng, Hoàng Mai, Hà Nội', '20.9911000000', '105.8789580000', '2019-12-27 13:14:58'),
+(31, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/15.png', 'Tầng 1 toà Park 6, Khu đô thị Times City, Hai Bà Trưng, Hà Nội', '20.9913360000', '105.8685800000', '2019-12-27 13:18:15'),
+(32, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/1.png', ' Park 1 Times City, 12, Ngõ 454 Minh Khai, Mai Động, Hai Bà Trưng, Hà Nội', '20.9931760000', '105.8678730000', '2019-12-27 13:19:02'),
+(33, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/2.png', 'T10, Khu đô thị Times City, Hai Bà Trưng, Hà Nội', '20.9942020000', '105.8685080000', '2019-12-27 13:19:44'),
+(34, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/3.png', 'L1-03, 458 Phố Minh Khai, Khu đô thị Times City, Hai Bà Trưng, Hà Nội', '20.9961150000', '105.8694090000', '2019-12-27 13:20:29'),
+(35, 'Cửa Hàng Tiện Ích VinMart', 'http://35.198.221.214:8080/resources/store_images/4.png', ' 79 phố Dương Văn Bé, Vĩnh Phú, Hai Bà Trưng, Hà Nội', '20.9992190000', '105.8730850000', '2019-12-27 13:21:44'),
+(36, 'Cửa Hàng Vinmart+', 'http://35.198.221.214:8080/resources/store_images/5.png', '31 Mạc Thị Bưởi, Vĩnh Tuy, Hai Bà Trưng, Hà Nội', '21.0007330000', '105.8691160000', '2019-12-27 13:22:39'),
+(37, 'Cửa Hàng Vinmart+', 'http://35.198.221.214:8080/resources/store_images/6.png', ' số 49B Ngõ 651 - Phố Minh Khai, Thanh Lương, Hai Bà Trưng, Hà Nội', '21.0034800000', '105.8682740000', '2019-12-27 13:23:34'),
+(38, 'Cửa Hàng Vinmart+', 'http://35.198.221.214:8080/resources/store_images/7.png', 'Ngõ 230 Lạc Trung, Thanh Lương, Hai Bà Trưng, Hà Nội', '21.0033190000', '105.8667530000', '2019-12-27 13:24:25'),
+(39, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/8.png', '183 Hồng Mai, Quỳnh Lôi, Hai Bà Trưng, Hà Nội', '20.9989710000', '105.8555200000', '2019-12-27 13:26:49'),
+(40, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/9.png', '69 Hồng Mai, Trương Định, Hai Bà Trưng, Hà Nội', '21.0010090000', '105.8506770000', '2019-12-27 13:27:53'),
+(41, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/19.png', '47, 52 ngõ 187 Hồng Mai, Bạch Mai, Hai Bà Trưng, Hà Nội', '21.0004740000', '105.8556570000', '2019-12-27 13:28:51'),
+(42, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/11.png', '409 Bạch Mai, Hai Bà Trưng, Hà Nội', '21.0013190000', '105.8506990000', '2019-12-27 13:29:48'),
+(43, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/12.png', '244 Lê Thanh Nghị, Đồng Tâm, Hai Bà Trưng, Hà Nội', '21.0019800000', '105.8424290000', '2019-12-27 13:30:33'),
+(44, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/13.png', '171 Giải Phóng, Phương Mai, Đống Đa, Hà Nội', '21.0014600000', '105.8413090000', '2019-12-27 13:31:14');
 
 -- --------------------------------------------------------
 
@@ -1524,8 +1639,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `full_name`, `phone_number`, `password`, `token`, `address`, `vinid_point`, `created_at`) VALUES
-(1, 'Nguyễn Huy Quang', '0964016863', '$2y$12$o9Pm2VZoy7phhujrYUBhM.WqzRLxiCHDSN/3BIC.03XH3EgyTNiEu', '', '1295 Giải Phóng, Hoàng Mai, Hà Nội', 0, '2019-12-26 04:33:10'),
-(2, 'Nguyễn Hoàng Hiệp', '0976485826', '$2y$12$/YcMhvv2CO6tV4YwSeFfCul8hnjc85RiSJ2zlKlUHAoP6tTnW1Jqa', '', '36 Trần Đại Nghĩa, Hai Bà Trưng, Hà Nội', 0, '2019-12-27 03:57:03');
+(1, 'Nguyễn Huy Quang', '0964016863', '$2y$12$o9Pm2VZoy7phhujrYUBhM.WqzRLxiCHDSN/3BIC.03XH3EgyTNiEu', '', '1295 Giải Phóng, Hoàng Mai, Hà Nội', 920, '2019-12-26 04:33:10'),
+(2, 'Nguyễn Hoàng Hiệp', '0976485826', '$2y$12$/YcMhvv2CO6tV4YwSeFfCul8hnjc85RiSJ2zlKlUHAoP6tTnW1Jqa', '', '36 Trần Đại Nghĩa, Hai Bà Trưng, Hà Nội', 0, '2019-12-27 03:57:03'),
+(5, '', '0964016864', '$2a$04$wtmSIKnXMRMJHNUZWCgak.3BRPIDyEe4Wn6kCaOP1MjqLMRb9bcQG', '', '', 0, '2020-01-02 10:20:41'),
+(6, '', '0964016865', '$2a$04$tv/gwVWpKAssCmyVvQ0XseMxlap4f56nImnGMfJ8QUMQjsQp8kdlq', '', '', 0, '2020-01-02 16:11:54'),
+(7, '', '0964016868', '$2a$04$/LVONtAAqUw4EEZSiC8Ss.FcLxTASby2s.xKBiqOXP5Tc5Zc1Nofq', '', '', 0, '2020-01-04 03:53:02'),
+(8, '', '0964016869', '$2a$04$B5J4AsyFvz93nUdXyvL1vOtUIDeFRVWF.9B396.II8s98T0krBPvC', '', '', 0, '2020-01-04 03:53:59'),
+(9, '', '0964016870', '$2a$04$.wGkVGzsVZIwfdW5mEPxu.uq8ibokCbRiZlldsjJGFXslNTZnPgqa', '', '', 0, '2020-01-04 03:57:41');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -1537,6 +1657,13 @@ INSERT INTO `user` (`id`, `full_name`, `phone_number`, `password`, `token`, `add
 ALTER TABLE `ice_cream_item`
   ADD PRIMARY KEY (`id`);
 ALTER TABLE `ice_cream_item` ADD FULLTEXT KEY `index_name` (`name`,`type`);
+
+--
+-- Chỉ mục cho bảng `item_image`
+--
+ALTER TABLE `item_image`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_image_item` (`ice_cream_item_id`);
 
 --
 -- Chỉ mục cho bảng `item_store`
@@ -1580,7 +1707,8 @@ ALTER TABLE `store` ADD FULLTEXT KEY `index_address` (`address`);
 -- Chỉ mục cho bảng `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `phone_number_unique` (`phone_number`);
 
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
@@ -1593,6 +1721,12 @@ ALTER TABLE `ice_cream_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT cho bảng `item_image`
+--
+ALTER TABLE `item_image`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+
+--
 -- AUTO_INCREMENT cho bảng `item_store`
 --
 ALTER TABLE `item_store`
@@ -1602,13 +1736,13 @@ ALTER TABLE `item_store`
 -- AUTO_INCREMENT cho bảng `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `rating`
@@ -1626,11 +1760,17 @@ ALTER TABLE `store`
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `item_image`
+--
+ALTER TABLE `item_image`
+  ADD CONSTRAINT `fk_image_item` FOREIGN KEY (`ice_cream_item_id`) REFERENCES `ice_cream_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `item_store`

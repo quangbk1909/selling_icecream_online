@@ -42,6 +42,21 @@ func (dao *Dao) GetItemInStore(id int) ([]model.IceCreamItem, error) {
 		return nil, err
 	}
 	dao.db.Model(&store).Related(&items, "IceCreamItems")
+
+	for i, item := range items {
+		rows, err := dao.db.Table("item_image").Where("ice_cream_item_id = ?", item.ID).Select("image_path").Rows()
+		if err != nil {
+			continue
+		}
+
+		for rows.Next() {
+			var image_path string
+			rows.Scan(&image_path)
+			items[i].ImagePaths = append(items[i].ImagePaths, image_path)
+		}
+		rows.Close()
+	}
+
 	return items, nil
 }
 
