@@ -44,12 +44,12 @@ func (controller *Controller) DetaiItem(c *gin.Context) {
 	}
 
 	dataResponse = map[string]interface{}{
-		"id":         item.ID,
-		"name":       item.Name,
-		"type":       item.Type,
-		"image_path": item.ImagePath,
-		"price":      item.Price,
-		"created_at": item.CreatedAt,
+		"id":          item.ID,
+		"name":        item.Name,
+		"type":        item.Type,
+		"image_paths": item.ImagePaths,
+		"price":       item.Price,
+		"created_at":  item.CreatedAt,
 	}
 
 	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful", dataResponse))

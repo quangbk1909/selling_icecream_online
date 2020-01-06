@@ -8,7 +8,6 @@ import (
 
 type OrderDao interface {
 	GetDetailOrderByID(id int) (model.OrderDetail, error)
-	//GetOrderOfUser(idUser int) ([]model.Order, error)
 	// Update(item *model.IceCreamItem) (*model.IceCreamItem, error)
 	StoreOrder(orderJson model.OrderJson) (model.OrderDetail, error)
 	// Delete(id int64) (bool, error)

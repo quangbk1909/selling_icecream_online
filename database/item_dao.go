@@ -20,6 +20,19 @@ func (dao *Dao) FetchItems() ([]model.IceCreamItem, error) {
 		return nil, err
 	}
 
+	for i, item := range items {
+		rows, err := dao.db.Table("item_image").Where("ice_cream_item_id = ?", item.ID).Select("image_path").Rows()
+		if err != nil {
+			continue
+		}
+
+		for rows.Next() {
+			var image_path string
+			rows.Scan(&image_path)
+			items[i].ImagePaths = append(items[i].ImagePaths, image_path)
+		}
+		rows.Close()
+	}
 	return items, nil
 }
 
@@ -30,6 +43,18 @@ func (dao *Dao) GetItemByID(id int) (model.IceCreamItem, error) {
 		return model.IceCreamItem{}, err
 	}
 
+	rows, err := dao.db.Table("item_image").Where("ice_cream_item_id = ?", item.ID).Select("image_path").Rows()
+	if err != nil {
+		item.ImagePaths = nil
+	}
+
+	for rows.Next() {
+		var image_path string
+		rows.Scan(&image_path)
+		item.ImagePaths = append(item.ImagePaths, image_path)
+	}
+	rows.Close()
+
 	return item, nil
 }
 
@@ -39,6 +64,20 @@ func (dao *Dao) SearchFullTextItem(text string) ([]model.IceCreamItem, error) {
 	err := dao.db.Raw(query).Scan(&items).Error
 	if err != nil {
 		return nil, err
+	}
+
+	for i, item := range items {
+		rows, err := dao.db.Table("item_image").Where("ice_cream_item_id = ?", item.ID).Select("image_path").Rows()
+		if err != nil {
+			continue
+		}
+
+		for rows.Next() {
+			var image_path string
+			rows.Scan(&image_path)
+			items[i].ImagePaths = append(items[i].ImagePaths, image_path)
+		}
+		rows.Close()
 	}
 	return items, nil
 }

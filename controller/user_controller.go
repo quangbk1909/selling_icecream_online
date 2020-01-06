@@ -34,23 +34,23 @@ func (controller *Controller) Register(c *gin.Context) {
 	}
 	registerJson.Password = string(hash)
 
-	user := model.User{
+	var user *model.User = &model.User{
 		PhoneNumber: registerJson.PhoneNumber,
 		Password:    registerJson.Password,
 	}
 
-	_, err = userDao.Store(&user)
+	user, err = userDao.Store(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error", nil))
 		return
 	}
 
-	token, err := authentication.MakeJWT(user)
+	token, err := authentication.MakeJWT(*user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error. Login again to continue!", nil))
 		return
 	}
-	c.JSON(http.StatusOK, utility.MakeResponse(200, "Register successful!", gin.H{"token": token}))
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Register successful!", gin.H{"user": user, "token": token}))
 
 }
 
