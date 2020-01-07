@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (controller *Controller) CreatOrder(c *gin.Context) {
+func (controller *Controller) CreateOrder(c *gin.Context) {
 	var orderInfo model.OrderJson
 	var orderDetail model.OrderDetail
 	if err := c.ShouldBindJSON(&orderInfo); err != nil {

@@ -66,6 +66,5 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 		c.Set("userID", userID)
 		c.Next()
-
 	}
 }

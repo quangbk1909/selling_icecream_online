@@ -28,14 +28,12 @@ type Store struct {
 
 // chiếu đến bảng rating trong database
 type Rating struct {
-	ID           int          `json:"id"`
-	RatingStar   int          `json:"rating_start"`
-	Comment      string       `json:"comment"`
-	IteamID      int          `json:"item_id"`
-	UserID       int          `json:"user_id"`
-	CreatedAt    string       `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
-	User         User         `gorm:"foreignkey:UserID"`
-	IceCreamItem IceCreamItem `gorm:"foreignkey:ItemID"`
+	ID         int    `json:"id"`
+	RatingStar int    `json:"rating_start"`
+	Comment    string `json:"comment"`
+	IteamID    int    `json:"item_id"`
+	UserID     int    `json:"user_id"`
+	CreatedAt  string `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 }
 
 // chiếu đến bảng order trong database
@@ -50,13 +48,14 @@ type Order struct {
 
 // chiếu đến bảng ice_cream_item trong database
 type IceCreamItem struct {
-	ID         int      `json:"id"`
-	Name       string   `json:"name"`
-	Type       string   `json:"type"`
-	ImagePaths []string `json:"image_paths"`
-	Price      int      `json:"price"`
-	CreatedAt  string   `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
-	Stores     []Store  `json:"stores" gorm:"many2many:item_store"`
+	ID         int                      `json:"id"`
+	Name       string                   `json:"name"`
+	Type       string                   `json:"type"`
+	ImagePaths []string                 `json:"image_paths"`
+	Price      int                      `json:"price"`
+	CreatedAt  string                   `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	Stores     []Store                  `json:"stores" gorm:"many2many:item_store"`
+	Ratings    []map[string]interface{} `json:"ratings"`
 }
 
 // chiếu đến bảng order_item

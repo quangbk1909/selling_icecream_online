@@ -17,7 +17,7 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 		userR.GET("", c.GetUsers)
 		userR.GET("/:id", c.DetailUser)
 		userR.GET("/:id/orders", c.GetOrderOfUser)
-		userR.PUT("/:id", c.UpdateInfo)
+		userR.PUT("/:id", c.UpdateInfo) // chưa xong
 
 	}
 
@@ -34,13 +34,20 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 	{
 		itemR.GET("", c.GetItems)
 		itemR.GET("/:id", c.DetaiItem)
+		itemR.GET("/:id/ratings", c.GetRatingsOfItem)
+
+	}
+
+	ratingR := r.Group("/ratings")
+	{
+		ratingR.POST("", authentication.AuthMiddleware(), c.CreateRating)
 	}
 
 	orderR := r.Group("/orders")
 	{
 		//orderR.GET("", c.GetItems)
 		orderR.GET("/:id", c.DetaiOrder)
-		orderR.POST("", c.CreatOrder)
+		orderR.POST("", c.CreateOrder)
 
 	}
 

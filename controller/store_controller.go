@@ -74,12 +74,42 @@ func (controller *Controller) GetItemInStore(c *gin.Context) {
 	}
 
 	var storeDao database.StoreDao = controller.dao
+	var itemDao database.ItemDao = controller.dao
+	var userDao database.UserDao = controller.dao
 
 	items, err = storeDao.GetItemInStore(id)
 	if err != nil {
 		message := "Non store exist with id!"
 		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, message, nil))
 		return
+	}
+
+	for i, item := range items {
+		var ratings []model.Rating
+		ratings, err = itemDao.GetAllCommentOfItem(item.ID)
+		if err != nil {
+			continue
+		}
+
+		var dataRatings []map[string]interface{}
+
+		for _, rating := range ratings {
+			user, err := userDao.GetUserByID(rating.UserID)
+			if err != nil {
+				continue
+			}
+			dataRatings = append(dataRatings, map[string]interface{}{
+				"id":          rating.ID,
+				"rating_star": rating.RatingStar,
+				"comment":     rating.Comment,
+				"user_name":   user.FullName,
+				"user_avatar": "https://www.takadada.com/wp-content/uploads/2019/07/avatar-one-piece-1.jpg",
+				"created_at":  rating.CreatedAt,
+			})
+		}
+
+		items[i].Ratings = dataRatings
+
 	}
 
 	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", items))

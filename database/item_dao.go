@@ -8,6 +8,7 @@ type ItemDao interface {
 	FetchItems() ([]model.IceCreamItem, error)
 	GetItemByID(id int) (model.IceCreamItem, error)
 	SearchFullTextItem(text string) ([]model.IceCreamItem, error)
+	GetAllCommentOfItem(itemId int) ([]model.Rating, error)
 	// Update(item *model.IceCreamItem) (*model.IceCreamItem, error)
 	// Store(item *model.IceCreamItem) (*model.IceCreamItem, error)
 	// Delete(id int64) (bool, error)
@@ -80,4 +81,14 @@ func (dao *Dao) SearchFullTextItem(text string) ([]model.IceCreamItem, error) {
 		rows.Close()
 	}
 	return items, nil
+}
+
+func (dao *Dao) GetAllCommentOfItem(itemId int) ([]model.Rating, error) {
+	var ratings []model.Rating
+	err := dao.db.Where("item_id = ?", itemId).Find(&ratings).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return ratings, nil
 }
