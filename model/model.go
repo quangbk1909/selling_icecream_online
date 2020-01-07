@@ -28,12 +28,12 @@ type Store struct {
 
 // chiếu đến bảng rating trong database
 type Rating struct {
-	ID         int    `json:"id"`
-	RatingStar int    `json:"rating_start"`
-	Comment    string `json:"comment"`
-	IteamID    int    `json:"item_id"`
-	UserID     int    `json:"user_id"`
-	CreatedAt  string `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	ID         int     `json:"id"`
+	RatingStar float64 `json:"rating_star"`
+	Comment    string  `json:"comment"`
+	ItemID     int     `json:"item_id"`
+	UserID     int     `json:"user_id"`
+	CreatedAt  string  `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 }
 
 // chiếu đến bảng order trong database

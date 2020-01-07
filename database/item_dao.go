@@ -1,6 +1,7 @@
 package database
 
 import (
+	"errors"
 	"vinid_project/model"
 )
 
@@ -9,6 +10,7 @@ type ItemDao interface {
 	GetItemByID(id int) (model.IceCreamItem, error)
 	SearchFullTextItem(text string) ([]model.IceCreamItem, error)
 	GetAllCommentOfItem(itemId int) ([]model.Rating, error)
+	AddRating(model.Rating) (model.Rating, error)
 	// Update(item *model.IceCreamItem) (*model.IceCreamItem, error)
 	// Store(item *model.IceCreamItem) (*model.IceCreamItem, error)
 	// Delete(id int64) (bool, error)
@@ -91,4 +93,12 @@ func (dao *Dao) GetAllCommentOfItem(itemId int) ([]model.Rating, error) {
 	}
 
 	return ratings, nil
+}
+
+func (dao *Dao) AddRating(rating model.Rating) (model.Rating, error) {
+	err := dao.db.Create(&rating).Error
+	if err != nil {
+		return model.Rating{}, errors.New("Internal server error")
+	}
+	return rating, nil
 }

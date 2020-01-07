@@ -48,7 +48,6 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 		//orderR.GET("", c.GetItems)
 		orderR.GET("/:id", c.DetaiOrder)
 		orderR.POST("", c.CreateOrder)
-
 	}
 
 	searchR := r.Group("/search")

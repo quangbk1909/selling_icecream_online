@@ -164,7 +164,32 @@ func (controller *Controller) GetRatingsOfItem(c *gin.Context) {
 }
 
 func (controller *Controller) CreateRating(c *gin.Context) {
-	// if userID, ok := c.Get("userID"); !ok {
-	// 	c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Get no user id from header", nil))
-	// }
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Get no user id from header", nil))
+		return
+	}
+
+	var rating model.Rating
+	if err := c.ShouldBindJSON(&rating); err != nil {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Not enough info to create rating!", nil))
+		return
+	}
+
+	rating.UserID = userID.(int)
+	var itemDao database.ItemDao = controller.dao
+	_, err := itemDao.GetItemByID(rating.ItemID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Non item exist with the id", nil))
+		return
+	}
+
+	if rating.RatingStar < 0 || rating.RatingStar > 5 {
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Rating star invalid!", nil))
+		return
+	}
+
+	rating, err = itemDao.AddRating(rating)
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", rating))
+
 }

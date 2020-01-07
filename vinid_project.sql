@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 06, 2020 lúc 05:58 AM
+-- Thời gian đã tạo: Th1 07, 2020 lúc 09:57 AM
 -- Phiên bản máy phục vụ: 10.4.10-MariaDB
 -- Phiên bản PHP: 7.3.12
 
@@ -1552,6 +1552,14 @@ CREATE TABLE `rating` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Đang đổ dữ liệu cho bảng `rating`
+--
+
+INSERT INTO `rating` (`id`, `rating_star`, `comment`, `item_id`, `user_id`, `created_at`) VALUES
+(1, 5, 'Kem rất ngon! Dịch vụ tốt', 1, 1, '2020-01-07 03:20:04'),
+(2, 4, 'Kem ngon, Giao hàng hơi lâu', 1, 2, '2020-01-07 03:36:28');
+
 -- --------------------------------------------------------
 
 --
@@ -1576,7 +1584,7 @@ INSERT INTO `store` (`id`, `name`, `image_path`, `address`, `latitude`, `longitu
 (1, 'VinMart+', 'http://35.198.221.214:8080/resources/store_images/1.png', 'Nhà No9 KĐT, Pháp Vân, Hoàng Ma,Hà Nội', '20.9588310000', '105.8467490000', '2019-12-27 12:24:21'),
 (2, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/2.png', 'Ô 13, khu, Ngõ 2 - Hoàng Liệt, Hoàng Liệt, Hoàng Mai, Hà Nội', '20.9666340000', '105.8376770000', '2019-12-27 12:27:10'),
 (3, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/3.png', 'Ô số 13A, lô Ơ2, bán đảo, Khu đô thị Linh Đàm, Hoàng Mai, Hà Nội', '20.9676220000', '105.8333100000', '2019-12-27 12:30:30'),
-(4, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/4,png', 'Nguyễn Duy Trinh, Khu đô thị Linh Đàm, Hoàng Mai, Hà Nội', '20.9641100000', '105.8318960000', '2019-12-27 12:32:13'),
+(4, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/4.png', 'Nguyễn Duy Trinh, Khu đô thị Linh Đàm, Hoàng Mai, Hà Nội', '20.9641100000', '105.8318960000', '2019-12-27 12:32:13'),
 (5, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/5.png', 'Toàn Nhà Hud 3, Linh Đàm, Hoàng Liệt, Thanh Xuân, Hà Nội', '20.9645230000', '105.8250960000', '2019-12-27 12:36:55'),
 (6, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/6.png', 'Số 10, ngõ 15 phố Bằng Liệt, Tây Nam Linh Đàm, Hoàng Mai, Hà Nội', '20.9646810000', '105.8208780000', '2019-12-27 12:45:49'),
 (7, 'Vinmart+', 'http://35.198.221.214:8080/resources/store_images/7.png', '182 Đại Từ, Đại Kim, Hoàng Mai, Hà Nội', '20.9713430000', '105.8335200000', '2019-12-27 12:46:38'),
@@ -1748,7 +1756,7 @@ ALTER TABLE `order_item`
 -- AUTO_INCREMENT cho bảng `rating`
 --
 ALTER TABLE `rating`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `store`

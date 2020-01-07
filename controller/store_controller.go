@@ -92,6 +92,14 @@ func (controller *Controller) GetItemInStore(c *gin.Context) {
 		}
 
 		var dataRatings []map[string]interface{}
+		dataRatings = append(dataRatings, map[string]interface{}{
+			"id":          0,
+			"rating_star": 5,
+			"comment":     "Sản phẩm tốt, Dịch vụ tốt",
+			"user_name":   "Huu pc",
+			"user_avatar": "https://www.takadada.com/wp-content/uploads/2019/07/avatar-one-piece-1.jpg",
+			"created_at":  "2020-01-07 10:20:04",
+		})
 
 		for _, rating := range ratings {
 			user, err := userDao.GetUserByID(rating.UserID)
