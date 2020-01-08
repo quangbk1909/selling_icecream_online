@@ -1,5 +1,6 @@
 # Vinid Project batch2
 Đề tài : App bán kem
+Source code : back-end Golang
 ## Domain
 http://35.198.221.214:8080/
 ## API Doc
