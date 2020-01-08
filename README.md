@@ -6,7 +6,7 @@ http://35.198.221.214:8080/
 Cập nhật sau
 ## Thiết kế hệ thống
 ### Biểu đồ Usecase
-![Usecase Diagram](https://ibb.co/BgcdKJQ)
+![Usecase Diagram](https://i.ibb.co/CnmNsyY/usecase-v2.png)
 
 
 ### Các chức năng xây dựng
@@ -21,4 +21,4 @@ Cập nhật sau
 - Hiển thị phí giao hàng theo khoảng cách và thanh toán
 
 ### Thiết kế CSDL
-![DB Diagram](https://ibb.co/5vdgg6c)
+![DB Diagram](https://i.ibb.co/RP1kk9H/db-v2.png)
