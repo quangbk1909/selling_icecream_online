@@ -21,4 +21,4 @@ Cập nhật sau
 - Hiển thị phí giao hàng theo khoảng cách và thanh toán
 
 ### Thiết kế CSDL
-![DB Diagram](https://i.ibb.co/RP1kk9H/db-v2.png)
+![DB Diagram](https://i.ibb.co/0MxWJ94/db-v2.png)
