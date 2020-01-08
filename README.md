@@ -1,5 +1,5 @@
 # Vinid Project batch2
-Đề tài  = App bán kem
+Đề tài : App bán kem
 ## Domain
 http://35.198.221.214:8080/
 ## API Doc
