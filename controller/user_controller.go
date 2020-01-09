@@ -230,7 +230,7 @@ func (controller *Controller) Deposite(c *gin.Context) {
 
 	_, err = userDao.Update(&user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Internal server error. Can not save the update!", nil))
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, err.Error(), nil))
 		return
 	}
 

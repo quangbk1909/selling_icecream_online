@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 07, 2020 lúc 09:57 AM
+-- Thời gian đã tạo: Th1 09, 2020 lúc 04:51 AM
 -- Phiên bản máy phục vụ: 10.4.10-MariaDB
 -- Phiên bản PHP: 7.3.12
 
@@ -1511,7 +1511,8 @@ CREATE TABLE `order` (
 
 INSERT INTO `order` (`id`, `user_id`, `status`, `total_fee`, `created_at`) VALUES
 (1, 1, 1, 0, '2020-01-01 15:26:26'),
-(5, 1, 1, 20, '2020-01-01 15:43:19');
+(5, 1, 1, 20, '2020-01-01 15:43:19'),
+(6, 9, 1, 20, '2020-01-09 03:42:17');
 
 -- --------------------------------------------------------
 
@@ -1535,7 +1536,10 @@ INSERT INTO `order_item` (`id`, `order_id`, `ice_cream_item_id`, `quantity`) VAL
 (2, 1, 2, 2),
 (9, 5, 1, 2),
 (10, 5, 2, 2),
-(11, 5, 3, 2);
+(11, 5, 3, 2),
+(12, 6, 1, 2),
+(13, 6, 2, 2),
+(14, 6, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -1545,7 +1549,7 @@ INSERT INTO `order_item` (`id`, `order_id`, `ice_cream_item_id`, `quantity`) VAL
 
 CREATE TABLE `rating` (
   `id` int(11) NOT NULL,
-  `rating_star` int(11) NOT NULL,
+  `rating_star` float NOT NULL,
   `comment` text NOT NULL,
   `item_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -1558,7 +1562,15 @@ CREATE TABLE `rating` (
 
 INSERT INTO `rating` (`id`, `rating_star`, `comment`, `item_id`, `user_id`, `created_at`) VALUES
 (1, 5, 'Kem rất ngon! Dịch vụ tốt', 1, 1, '2020-01-07 03:20:04'),
-(2, 4, 'Kem ngon, Giao hàng hơi lâu', 1, 2, '2020-01-07 03:36:28');
+(2, 4, 'Kem ngon, Giao hàng hơi lâu', 1, 2, '2020-01-07 03:36:28'),
+(3, 4, 'Kem rất ngon', 2, 9, '2020-01-07 11:07:30'),
+(4, 4, 'Kem rất ngon', 3, 9, '2020-01-07 11:09:03'),
+(5, 4, 'Kem rất ngon', 3, 9, '2020-01-07 11:09:48'),
+(6, 4, 'Kem rất ngon', 3, 9, '2020-01-07 11:10:22'),
+(7, 4, 'Kem rất ngon aa', 3, 9, '2020-01-07 11:10:35'),
+(8, 4, 'Kem rất ngon aa', 3, 9, '2020-01-07 11:11:15'),
+(9, 4, 'Kem rất ngon abc', 3, 9, '2020-01-07 11:11:22'),
+(10, 4, 'Kem rất ngon abc', 3, 9, '2020-01-07 11:11:32');
 
 -- --------------------------------------------------------
 
@@ -1653,7 +1665,10 @@ INSERT INTO `user` (`id`, `full_name`, `phone_number`, `password`, `token`, `add
 (6, '', '0964016865', '$2a$04$tv/gwVWpKAssCmyVvQ0XseMxlap4f56nImnGMfJ8QUMQjsQp8kdlq', '', '', 0, '2020-01-02 16:11:54'),
 (7, '', '0964016868', '$2a$04$/LVONtAAqUw4EEZSiC8Ss.FcLxTASby2s.xKBiqOXP5Tc5Zc1Nofq', '', '', 0, '2020-01-04 03:53:02'),
 (8, '', '0964016869', '$2a$04$B5J4AsyFvz93nUdXyvL1vOtUIDeFRVWF.9B396.II8s98T0krBPvC', '', '', 0, '2020-01-04 03:53:59'),
-(9, '', '0964016870', '$2a$04$.wGkVGzsVZIwfdW5mEPxu.uq8ibokCbRiZlldsjJGFXslNTZnPgqa', '', '', 0, '2020-01-04 03:57:41');
+(9, 'Nguyễn Trần Hữu Phước', '0964016870', '$2a$04$.wGkVGzsVZIwfdW5mEPxu.uq8ibokCbRiZlldsjJGFXslNTZnPgqa', '', '36 Trần Đại Nghĩa, Hai Bà Trưng, Hà Nội', 280, '2020-01-04 03:57:41'),
+(10, '', '0964016871', '$2a$04$kvWdKeax3SspMjIW6Y/VEeSz5aLhMFrvC9E3mgRT8y4dr5r3Va.Vm', '', '', 100, '2020-01-08 04:43:09'),
+(11, '', '0964016872', '$2a$04$hfYCWz4dCMdYf7tpy5eTA.yHDuG49MBZhgC/eDLtKkC/Xr4U8Too2', '', '', 0, '2020-01-08 15:35:31'),
+(12, '', '0964016873', '$2a$04$aUGoYMHowtTOxeXIZbShzuw.GrUtUiaqrtlTMCuoRHO4Sj0Cr18hu', '', '', 0, '2020-01-09 02:07:52');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -1744,19 +1759,19 @@ ALTER TABLE `item_store`
 -- AUTO_INCREMENT cho bảng `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `rating`
 --
 ALTER TABLE `rating`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `store`
@@ -1768,7 +1783,7 @@ ALTER TABLE `store`
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
