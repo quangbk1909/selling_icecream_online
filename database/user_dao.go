@@ -77,13 +77,13 @@ func (dao *Dao) Authenticate(authenInfo model.AuthenticationJson) (model.User, e
 	var user model.User
 	err := dao.db.Where("phone_number = ?", authenInfo.PhoneNumber).First(&user).Error
 	if err != nil {
-		return model.User{}, errors.New("Authenticate fail! Non user exist with the phone number")
+		return model.User{}, errors.New("Authenticate fail! Non user exist with the phone number.")
 	}
 
 	byteHash := []byte(user.Password)
 	err = bcrypt.CompareHashAndPassword(byteHash, []byte(authenInfo.Password))
 	if err != nil {
-		return model.User{}, errors.New("Authenticate fail! Password  incorrect !")
+		return model.User{}, errors.New("Authenticate fail! Password  incorrect!")
 	}
 
 	return user, nil

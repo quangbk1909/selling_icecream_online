@@ -11,12 +11,20 @@ import (
 )
 
 func (controller *Controller) CreateOrder(c *gin.Context) {
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Get no user id from header", nil))
+		return
+	}
+
 	var orderInfo model.OrderJson
 	var orderDetail model.OrderDetail
 	if err := c.ShouldBindJSON(&orderInfo); err != nil {
 		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Not enough info to create order", nil))
 		return
 	}
+
+	orderInfo.UserID = userID.(int)
 
 	var userDao database.UserDao = controller.dao
 	user, err := userDao.GetUserByID(orderInfo.UserID)

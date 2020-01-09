@@ -9,6 +9,10 @@ import (
 
 func InitRoute(r *gin.Engine, c *controller.Controller) {
 
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, "Helu! Đà đa đa đa đá ... sâu coollll!")
+	})
+
 	r.POST("/register", c.Register)
 	r.POST("/login", c.Login)
 
@@ -17,7 +21,8 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 		userR.GET("", c.GetUsers)
 		userR.GET("/:id", c.DetailUser)
 		userR.GET("/:id/orders", c.GetOrderOfUser)
-		userR.PUT("/:id", c.UpdateInfo) // chưa xong
+		userR.PUT("", authentication.AuthMiddleware(), c.UpdateInfo)
+		userR.PUT("/deposit", authentication.AuthMiddleware(), c.Deposite)
 
 	}
 
@@ -47,7 +52,7 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 	{
 		//orderR.GET("", c.GetItems)
 		orderR.GET("/:id", c.DetaiOrder)
-		orderR.POST("", c.CreateOrder)
+		orderR.POST("", authentication.AuthMiddleware(), c.CreateOrder)
 	}
 
 	searchR := r.Group("/search")
