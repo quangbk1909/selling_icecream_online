@@ -24,18 +24,18 @@ type Store struct {
 	ImagePath     string         `json:"image_path"`
 	Latitude      float64        `json:"latitude"`
 	Longitude     float64        `json:"longitude"`
-	CreatedAt     string         `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	CreatedAt     time.Time      `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 	IceCreamItems []IceCreamItem `json:"ice_cream_items" gorm:"many2many:item_store"`
 }
 
 // chiếu đến bảng rating trong database
 type Rating struct {
-	ID         int     `json:"id"`
-	RatingStar float64 `json:"rating_star"`
-	Comment    string  `json:"comment"`
-	ItemID     int     `json:"item_id"`
-	UserID     int     `json:"user_id"`
-	CreatedAt  string  `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	ID         int       `json:"id"`
+	RatingStar float64   `json:"rating_star"`
+	Comment    string    `json:"comment"`
+	ItemID     int       `json:"item_id"`
+	UserID     int       `json:"user_id"`
+	CreatedAt  time.Time `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 }
 
 // chiếu đến bảng order trong database
@@ -44,7 +44,7 @@ type Order struct {
 	UserID        int            `json:"user_id"`
 	Status        int            `json:"status"`
 	TotalFee      int            `json:"total_fee"`
-	CreatedAt     string         `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	CreatedAt     time.Time      `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 	IceCreamItems []IceCreamItem `json:"ice_cream_items" gorm:"many2many:order_item"`
 }
 
@@ -55,7 +55,7 @@ type IceCreamItem struct {
 	Type       string                   `json:"type"`
 	ImagePaths []string                 `json:"image_paths"`
 	Price      int                      `json:"price"`
-	CreatedAt  string                   `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	CreatedAt  time.Time                `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 	Stores     []Store                  `json:"stores" gorm:"many2many:item_store"`
 	Ratings    []map[string]interface{} `json:"ratings"`
 }
