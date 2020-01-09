@@ -1,17 +1,19 @@
 package model
 
+import "time"
+
 const SecretKey string = "saomabietduoc"
 
 //Chiếu đến bảng user trong database
 type User struct {
-	ID          int    `json:"id"`
-	FullName    string `json:"full_name"`
-	PhoneNumber string `json:"phone_number"`
-	Token       string `json:"token"`
-	Address     string `json:"address"`
-	Password    string `json:"password"`
-	VinidPoint  int    `json:"vinid_point"`
-	CreatedAt   string `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	ID          int       `json:"id"`
+	FullName    string    `json:"full_name"`
+	PhoneNumber string    `json:"phone_number"`
+	Token       string    `json:"token"`
+	Address     string    `json:"address"`
+	Password    string    `json:"password"`
+	VinidPoint  int       `json:"vinid_point"`
+	CreatedAt   time.Time `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 }
 
 // chiếu đến bảng store trong database
