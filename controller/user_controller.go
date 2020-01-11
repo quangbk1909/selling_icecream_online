@@ -3,7 +3,6 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"vinid_project/authentication"
 	"vinid_project/database"
 	"vinid_project/model"
@@ -150,34 +149,32 @@ func (controller *Controller) GetUsers(c *gin.Context) {
 func (controller *Controller) DetailUser(c *gin.Context) {
 	var user model.User
 	var userDao database.UserDao = controller.dao
-	id, err := strconv.Atoi(c.Param("id"))
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Get no user id from header", nil))
 		return
 	}
 
-	user, err = userDao.GetUserByID(id)
+	user, err := userDao.GetUserByID(userID.(int))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Non user exist with the id", nil))
 		return
 	}
 
-	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful", user))
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successful!", user))
 }
 
 func (controller *Controller) GetOrderOfUser(c *gin.Context) {
 	var orders []model.Order
-	id, err := strconv.Atoi(c.Param("id"))
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, "Get no user id from header", nil))
 		return
 	}
 
 	var userDao database.UserDao = controller.dao
 
-	orders, err = userDao.GetOrderOfUser(id)
+	orders, err := userDao.GetOrderOfUser(userID.(int))
 	if err != nil {
 		message := "Non orders exist with user id!"
 		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, message, nil))

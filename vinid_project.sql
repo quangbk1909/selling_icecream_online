@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 09, 2020 lúc 04:51 AM
+-- Thời gian đã tạo: Th1 11, 2020 lúc 03:30 AM
 -- Phiên bản máy phục vụ: 10.4.10-MariaDB
 -- Phiên bản PHP: 7.3.12
 
@@ -1501,6 +1501,8 @@ CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL,
+  `delivery_address` varchar(255) NOT NULL,
+  `ship_fee` int(11) NOT NULL,
   `total_fee` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1509,10 +1511,12 @@ CREATE TABLE `order` (
 -- Đang đổ dữ liệu cho bảng `order`
 --
 
-INSERT INTO `order` (`id`, `user_id`, `status`, `total_fee`, `created_at`) VALUES
-(1, 1, 1, 0, '2020-01-01 15:26:26'),
-(5, 1, 1, 20, '2020-01-01 15:43:19'),
-(6, 9, 1, 20, '2020-01-09 03:42:17');
+INSERT INTO `order` (`id`, `user_id`, `status`, `delivery_address`, `ship_fee`, `total_fee`, `created_at`) VALUES
+(1, 1, 1, '', 10, 30, '2020-01-01 15:26:26'),
+(5, 1, 1, '', 10, 30, '2020-01-01 15:43:19'),
+(6, 9, 1, '', 10, 30, '2020-01-09 03:42:17'),
+(7, 9, 1, 'Đường vành đai 3, Hanoi', 0, 20, '2020-01-10 16:12:09'),
+(10, 9, 1, 'Đại Từ, Hanoi', 0, 20, '2020-01-10 16:14:42');
 
 -- --------------------------------------------------------
 
@@ -1539,7 +1543,10 @@ INSERT INTO `order_item` (`id`, `order_id`, `ice_cream_item_id`, `quantity`) VAL
 (11, 5, 3, 2),
 (12, 6, 1, 2),
 (13, 6, 2, 2),
-(14, 6, 3, 2);
+(14, 6, 3, 2),
+(15, 7, 1, 2),
+(16, 7, 2, 2),
+(17, 7, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -1665,8 +1672,8 @@ INSERT INTO `user` (`id`, `full_name`, `phone_number`, `password`, `token`, `add
 (6, '', '0964016865', '$2a$04$tv/gwVWpKAssCmyVvQ0XseMxlap4f56nImnGMfJ8QUMQjsQp8kdlq', '', '', 0, '2020-01-02 16:11:54'),
 (7, '', '0964016868', '$2a$04$/LVONtAAqUw4EEZSiC8Ss.FcLxTASby2s.xKBiqOXP5Tc5Zc1Nofq', '', '', 0, '2020-01-04 03:53:02'),
 (8, '', '0964016869', '$2a$04$B5J4AsyFvz93nUdXyvL1vOtUIDeFRVWF.9B396.II8s98T0krBPvC', '', '', 0, '2020-01-04 03:53:59'),
-(9, 'Nguyễn Trần Hữu Phước', '0964016870', '$2a$04$.wGkVGzsVZIwfdW5mEPxu.uq8ibokCbRiZlldsjJGFXslNTZnPgqa', '', '36 Trần Đại Nghĩa, Hai Bà Trưng, Hà Nội', 280, '2020-01-04 03:57:41'),
-(10, '', '0964016871', '$2a$04$kvWdKeax3SspMjIW6Y/VEeSz5aLhMFrvC9E3mgRT8y4dr5r3Va.Vm', '', '', 100, '2020-01-08 04:43:09'),
+(9, 'Nguyễn Thanh Hùng', '0964016870', '$2a$04$.wGkVGzsVZIwfdW5mEPxu.uq8ibokCbRiZlldsjJGFXslNTZnPgqa', '', '11 Giáp Bát, Hoàng Mai, Hà Nội', 20, '2020-01-04 03:57:41'),
+(10, '', '0964016871', '$2a$04$kvWdKeax3SspMjIW6Y/VEeSz5aLhMFrvC9E3mgRT8y4dr5r3Va.Vm', '', '', 300, '2020-01-08 04:43:09'),
 (11, '', '0964016872', '$2a$04$hfYCWz4dCMdYf7tpy5eTA.yHDuG49MBZhgC/eDLtKkC/Xr4U8Too2', '', '', 0, '2020-01-08 15:35:31'),
 (12, '', '0964016873', '$2a$04$aUGoYMHowtTOxeXIZbShzuw.GrUtUiaqrtlTMCuoRHO4Sj0Cr18hu', '', '', 0, '2020-01-09 02:07:52');
 
@@ -1759,13 +1766,13 @@ ALTER TABLE `item_store`
 -- AUTO_INCREMENT cho bảng `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT cho bảng `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT cho bảng `rating`

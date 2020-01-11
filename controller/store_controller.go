@@ -38,7 +38,7 @@ func (controller *Controller) DetaiStore(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request. Can not convert id parameter to int", nil))
+		c.JSON(http.StatusBadRequest, utility.MakeResponse(404, "Bad request!", nil))
 		return
 	}
 

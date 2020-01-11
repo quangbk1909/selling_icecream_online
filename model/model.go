@@ -129,7 +129,7 @@ type ItemOrderJson struct {
 // dạng json dữ liệu của 1 order nhận được từ client
 type OrderJson struct {
 	UserID      int             `json:"user_id"`
-	Status      int             `json:"status" binding:"required"`
+	Status      int             `json:"status"`
 	ShipFee     int             `json:"ship_fee"`
 	TotalFee    int             `json:"total_fee" binding:"required"`
 	Coordinates Coordinates     `json:"coordinates" binding:"required"`

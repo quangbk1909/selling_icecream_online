@@ -22,8 +22,8 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 		userR := apiR.Group("/users")
 		{
 			userR.GET("", c.GetUsers)
-			userR.GET("/:id", c.DetailUser)
-			userR.GET("/:id/orders", c.GetOrderOfUser)
+			userR.GET("/detail", c.DetailUser)
+			userR.GET("/orders", c.GetOrderOfUser)
 			userR.PUT("", c.UpdateInfo)
 			userR.PUT("/deposit", c.Deposite)
 
