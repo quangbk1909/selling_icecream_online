@@ -16,55 +16,62 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 	r.POST("/register", c.Register)
 	r.POST("/login", c.Login)
 
-	userR := r.Group("/users")
+	apiR := r.Group("/api")
+	apiR.Use(authentication.AuthMiddleware())
 	{
-		userR.GET("", c.GetUsers)
-		userR.GET("/:id", c.DetailUser)
-		userR.GET("/:id/orders", c.GetOrderOfUser)
-		userR.PUT("", authentication.AuthMiddleware(), c.UpdateInfo)
-		userR.PUT("/deposit", authentication.AuthMiddleware(), c.Deposite)
+		userR := apiR.Group("/users")
+		{
+			userR.GET("", c.GetUsers)
+			userR.GET("/:id", c.DetailUser)
+			userR.GET("/:id/orders", c.GetOrderOfUser)
+			userR.PUT("", c.UpdateInfo)
+			userR.PUT("/deposit", c.Deposite)
+
+		}
+		storeR := apiR.Group("/stores")
+		{
+			storeR.GET("", c.GetStores)
+			storeR.GET("/:id", c.DetaiStore)
+			storeR.GET("/:id/items", c.GetItemInStore)
+		}
+
+		apiR.GET("/around_here", c.GetStoresAroundHere)
+
+		itemR := apiR.Group("/items")
+		{
+			itemR.GET("", c.GetItems)
+			itemR.GET("/:id", c.DetaiItem)
+			itemR.GET("/:id/ratings", c.GetRatingsOfItem)
+
+		}
+
+		ratingR := apiR.Group("/ratings")
+		{
+			ratingR.POST("", c.CreateRating)
+		}
+
+		orderR := apiR.Group("/orders")
+		{
+			//orderR.GET("", c.GetItems)
+			orderR.GET("/:id", c.DetaiOrder)
+			orderR.POST("", c.CreateOrder)
+		}
+
+		searchR := apiR.Group("/search")
+		{
+			searchR.GET("/item", c.SearchItem)
+			searchR.GET("/store", c.SearchStore)
+		}
 
 	}
 
-	storeR := r.Group("/stores")
-	{
-		storeR.GET("", c.GetStores)
-		storeR.GET("/:id", c.DetaiStore)
-		storeR.GET("/:id/items", c.GetItemInStore)
-	}
-
-	r.GET("/around_here", c.GetStoresAroundHere)
-
-	itemR := r.Group("/items")
-	{
-		itemR.GET("", c.GetItems)
-		itemR.GET("/:id", c.DetaiItem)
-		itemR.GET("/:id/ratings", c.GetRatingsOfItem)
-
-	}
-
-	ratingR := r.Group("/ratings")
-	{
-		ratingR.POST("", authentication.AuthMiddleware(), c.CreateRating)
-	}
-
-	orderR := r.Group("/orders")
-	{
-		//orderR.GET("", c.GetItems)
-		orderR.GET("/:id", c.DetaiOrder)
-		orderR.POST("", authentication.AuthMiddleware(), c.CreateOrder)
-	}
-
-	searchR := r.Group("/search")
-	{
-		searchR.GET("/item", c.SearchItem)
-		searchR.GET("/store", c.SearchStore)
-	}
+	r.GET("/resources/store_images/:name", c.GetStoreImage)
+	r.GET("/resources/item_images/:name", c.GetItemImage)
 
 	r.GET("/ping", authentication.AuthMiddleware(), func(c *gin.Context) {
 		c.JSON(200, c.GetInt("userID"))
 	})
 
-	r.GET("/resources/store_images/:name", c.GetStoreImage)
-	r.GET("/resources/item_images/:name", c.GetItemImage)
+	r.GET("test_geocoder", c.TestGeoCoder)
+
 }

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 	"vinid_project/model"
+	"vinid_project/utility"
 )
 
 type OrderDao interface {
@@ -48,29 +49,34 @@ func (dao *Dao) GetDetailOrderByID(id int) (model.OrderDetail, error) {
 func (dao *Dao) StoreOrder(orderJson model.OrderJson) (model.OrderDetail, error) {
 	var order model.Order
 	var orderItems []model.OrderItem
-	if len(orderJson.Items) == 0 {
-		return model.OrderDetail{}, errors.New("Can not create order without items")
-	}
-	for _, item := range orderJson.Items {
-		var itemInfo model.IceCreamItem
-		err := dao.db.First(&itemInfo, item.ItemID).Error
-		if err != nil {
-			return model.OrderDetail{}, errors.New("No item found with this id :" + strconv.Itoa(item.ItemID))
+	if len(orderJson.Items) != 0 {
+		for _, item := range orderJson.Items {
+			var itemInfo model.IceCreamItem
+			err := dao.db.First(&itemInfo, item.ItemID).Error
+			if err != nil {
+				return model.OrderDetail{}, errors.New("No item found with this id :" + strconv.Itoa(item.ItemID))
+			}
+			orderItems = append(orderItems, model.OrderItem{IceCreamItemId: item.ItemID, Quantity: item.Quantity})
 		}
-		orderItems = append(orderItems, model.OrderItem{IceCreamItemId: item.ItemID, Quantity: item.Quantity})
 	}
 
 	order.UserID = orderJson.UserID
+	order.ShipFee = orderJson.ShipFee
 	order.TotalFee = orderJson.TotalFee
-	order.Status = 1
+	order.Status = orderJson.Status
+	deliveryAddress, _ := utility.GetAddressFromCoordinates(orderJson.Coordinates.Latitude, orderJson.Coordinates.Longitude)
+	order.DeliveryAddress = deliveryAddress
+
 	err := dao.db.Create(&order).Error
 	if err != nil {
 		return model.OrderDetail{}, errors.New("Internal server error")
 	}
 
-	for _, orderItem := range orderItems {
-		orderItem.OrderID = order.ID
-		dao.db.Create(&orderItem)
+	if len(orderItems) > 0 {
+		for _, orderItem := range orderItems {
+			orderItem.OrderID = order.ID
+			dao.db.Create(&orderItem)
+		}
 	}
 
 	return dao.GetDetailOrderByID(order.ID)

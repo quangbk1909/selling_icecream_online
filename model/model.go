@@ -2,7 +2,10 @@ package model
 
 import "time"
 
-const SecretKey string = "saomabietduoc"
+const (
+	SecretKey        string = "saomabietduoc"
+	UserIDInClaimJWT string = "userID"
+)
 
 //Chiếu đến bảng user trong database
 type User struct {
@@ -40,12 +43,14 @@ type Rating struct {
 
 // chiếu đến bảng order trong database
 type Order struct {
-	ID            int            `json:"id"`
-	UserID        int            `json:"user_id"`
-	Status        int            `json:"status"`
-	TotalFee      int            `json:"total_fee"`
-	CreatedAt     time.Time      `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
-	IceCreamItems []IceCreamItem `json:"ice_cream_items" gorm:"many2many:order_item"`
+	ID              int            `json:"id"`
+	UserID          int            `json:"user_id"`
+	Status          int            `json:"status"`
+	DeliveryAddress string         `json:"delivery_address"`
+	ShipFee         int            `json:"ship_fee"`
+	TotalFee        int            `json:"total_fee"`
+	CreatedAt       time.Time      `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	IceCreamItems   []IceCreamItem `json:"ice_cream_items" gorm:"many2many:order_item"`
 }
 
 // chiếu đến bảng ice_cream_item trong database
@@ -123,9 +128,17 @@ type ItemOrderJson struct {
 
 // dạng json dữ liệu của 1 order nhận được từ client
 type OrderJson struct {
-	UserID   int             `json:"user_id"`
-	TotalFee int             `json:"total_fee"`
-	Items    []ItemOrderJson `json:"items"`
+	UserID      int             `json:"user_id"`
+	Status      int             `json:"status" binding:"required"`
+	ShipFee     int             `json:"ship_fee"`
+	TotalFee    int             `json:"total_fee" binding:"required"`
+	Coordinates Coordinates     `json:"coordinates" binding:"required"`
+	Items       []ItemOrderJson `json:"items"`
+}
+
+type Coordinates struct {
+	Longitude float64 `json:"longitude"`
+	Latitude  float64 `json:"latitude"`
 }
 
 // json thông tin xác thực của người dùng, dùng cho register + login

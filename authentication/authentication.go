@@ -10,7 +10,7 @@ import (
 )
 
 type AuthorizationHeader struct {
-	Token string `header:"Authorization"`
+	Token string `header:"Authorization" binding:"required"`
 }
 
 func MakeJWT(user model.User) (string, error) {
@@ -47,15 +47,18 @@ func AuthMiddleware() gin.HandlerFunc {
 		var headerInfo AuthorizationHeader
 		if err := c.ShouldBindHeader(&headerInfo); err != nil {
 			c.AbortWithStatusJSON(401, gin.H{"error": "Header must include Authentication token!"})
+			return
 		}
 
 		token, err := ParseJWT(headerInfo)
 		if err != nil {
 			c.AbortWithStatusJSON(401, gin.H{"error": "Token invalid : " + err.Error()})
+			return
 		}
 
 		if !token.Valid {
 			c.AbortWithStatusJSON(401, gin.H{"error": "Token invalid!"})
+			return
 		}
 
 		var userID int

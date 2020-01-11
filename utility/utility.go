@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 	"vinid_project/model"
+
+	"github.com/jasonwinn/geocoder"
 )
 
 func DecodeDataFromJsonFile(f *os.File, data interface{}) error {
@@ -44,4 +46,12 @@ func MakeResponse(statusCode int, message string, data interface{}) model.Respon
 
 	return response
 
+}
+
+func GetAddressFromCoordinates(latitude float64, longitude float64) (string, error) {
+	address, err := geocoder.ReverseGeocode(latitude, longitude)
+	if err != nil {
+		return "", err
+	}
+	return address.Street + ", " + address.City, nil
 }
