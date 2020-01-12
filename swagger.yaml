@@ -1,0 +1,910 @@
+swagger: '2.0'
+info:
+  description: 'Mô tả api của app bán kem - vinid project batch 2. Backend : Golang'
+  version: 1.0.0
+  title: Swagger Ice Cream Online
+host: 35.198.221.214:8080
+tags:
+  - name: Authorization
+    description: Đăng nhập, đăng ký
+  - name: Store
+    description: Api liên quan đến cửa hàng
+  - name: User
+    description: Api liên quan đến user
+  - name: IceCreamItem
+    description: Api liên quan đến các sản phẩm kem
+  - name: Rating
+    description: Api liên quan đến đánh giá sản phẩm
+  - name: Order
+    description: Api liên quan đến đơn hàng
+  - name: Orther
+    description: Api khác
+  
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+schemes:
+  - http
+paths:
+  /register:
+    post:
+      tags:
+        - Authorization
+      summary: Đăng ký tài khoản mới
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: AuthInfo
+          description: Thông tin đăng nhập của user
+          required: true
+          schema:
+            type: object
+            required:
+              - phone_number
+              - password
+            properties:
+              phone_number:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+            description: Register successful!
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                    user:
+                      $ref: '#/definitions/User'
+                meta:
+                   $ref: '#/definitions/Meta'
+                  
+            
+        404:
+          description: Invalid input!, Phone number already exist!
+          
+        500:
+          description: Internal server error!
+          
+  /login:
+    post:
+      tags:
+        - Authorization
+      summary: Đăng nhập vào app
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: AuthInfo
+          description: Thông tin đăng nhập của user
+          required: true
+          schema:
+            type: object
+            required:
+              - phone_number
+              - password
+            properties:
+              phone_number:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+            description: Authenticate successful!
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                    user:
+                      $ref: '#/definitions/User'
+                meta:
+                   $ref: '#/definitions/Meta'
+                  
+            
+        404:
+          description: Invalid input!, Authenticate fail! Non user exist with the phone number, Authenticate fail! Password  incorrect!
+          
+        500:
+          description: Internal server error! 
+          
+        
+  /api/users:
+    
+    put:
+      tags:
+        - User
+      security:
+        - Bearer: []
+      summary: Thêm thông tin user
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: UserInfoJson
+          description: Thông tin user update
+          required: true
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              address:
+                type: string
+      
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/User'
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404: 
+          description: user exist with the id!
+        500:
+          description: Internal server error! 
+     
+  /api/users/detail:
+    get:
+      tags:
+        - User
+      summary: Chi tiết user
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/User'
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Non user exist with the id
+        500:
+          description: Internal server error! 
+          
+  /api/users/orders:
+    get:
+      tags:
+        - User
+      summary: Danh sách order của user
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Order'
+
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Non user exist with the id
+        500:
+          description: Internal server error! 
+          
+  /api/users/deposit:
+    put:
+      tags:
+        - User
+      summary: Nạp vinid point cho user
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: body
+          name: Amount
+          description: Số point nạp
+          required: true
+          schema:
+            type: object
+            properties:
+              amount:
+                type: integer
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/User'
+
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Non user exist with the id
+        500:
+          description: Internal server error! 
+          
+
+
+  /api/stores:
+    get:
+      tags:
+        - Store
+      summary: Lấy danh sách tất cả cửa hàng
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type : array
+                items:
+                  $ref: '#/definitions/Store'
+              meta:
+                $ref: '#/definitions/Meta'
+                
+        401:
+          description: Header must include Authentication token!, Token invalid!
+                   
+        500:
+          description: Internal server error! 
+          
+  /api/stores/{id}:
+    get:
+      tags:
+        - Store
+      summary: Chi tiết thông tin một cửa hàng
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: id   
+          required: true
+          type: integer
+          minimum: 1
+          description: The store ID.
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Store'
+              meta:
+                $ref: '#/definitions/Meta'
+                
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Bad request!, Non store exist with id!
+        500:
+          description: Internal server error! 
+          
+  /api/stores/{id}/items:
+    get:
+      tags:
+        - Store
+      summary: Lấy danh sách các sản phẩm trong cửa hàng
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: id   
+          required: true
+          type: integer
+          minimum: 1
+          description: The store ID.
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/IceCreamItemDetail'
+              meta:
+                $ref: '#/definitions/Meta'
+                
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Bad request!, Non store exist with id!
+        500:
+          description: Internal server error! 
+          
+  
+  /api/items:
+    get:
+      tags:
+        - IceCreamItem
+      summary: Lấy danh sách tất cả các item
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type : array
+                items:
+                  $ref: '#/definitions/IceCreamItemDetail'
+              meta:
+                $ref: '#/definitions/Meta'
+                
+        401:
+          description: Header must include Authentication token!, Token invalid!
+                   
+        500:
+          description: Internal server error! 
+          
+  /api/items/{id}:
+    get:
+      tags:
+        - IceCreamItem
+      summary: Chi tiết thông tin một sản phẩm
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: id   
+          required: true
+          type: integer
+          minimum: 1
+          description: The item ID.
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/IceCreamItemDetail'
+              meta:
+                $ref: '#/definitions/Meta'
+                
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Bad request!, Non item exist with id!
+        500:
+          description: Internal server error! 
+          
+  /api/items/{id}/ratings:
+    get:
+      tags:
+        - IceCreamItem
+      summary: Lấy danh sách đánh giá của một sản phẩm
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: id   
+          required: true
+          type: integer
+          minimum: 1
+          description: The item ID.
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Rating'
+              meta:
+                $ref: '#/definitions/Meta'
+                
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Bad request!, Non item exist with id!
+        500:
+          description: Internal server error! 
+          
+          
+  /api/ratings:
+    post:
+      tags:
+        - Rating
+      security:
+        - Bearer: []
+      summary: Tạo đánh giá một sản phẩm
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: RatingInfo
+          description: Thông tin đánh giá sản phẩm
+          required: true
+          schema:
+            type: object
+            properties:
+              item_id:
+                type: integer
+              rating_star:
+                type: integer
+              comment:
+                type: string
+      
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Rating'
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404: 
+          description: Not enough info to create rating!, Non item exist with the id!, Rating star invalid!
+        500:
+          description: Internal server error! 
+  
+  /api/orders/{id}:
+    get:
+      tags:
+        - Order
+      summary: Chi tiết thông tin một order
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: id   
+          required: true
+          type: integer
+          minimum: 1
+          description: The order ID.
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/OrderDetail'
+              meta:
+                $ref: '#/definitions/Meta'
+                
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404:
+          description: Bad request!, Order not exist with the id!
+        500:
+          description: Internal server error! 
+          
+  /api/orders:
+    post:
+      tags:
+        - Order
+      security:
+        - Bearer: []
+      summary: Tạo một đơn hàng mới
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: OrderJson
+          description: Thông tin order cần tạo
+          required: true
+          schema:
+            type: object
+            properties:
+              total_fee:
+                type: integer
+              ship_fee:
+                type: integer
+              status:
+                type: integer
+              coordinates:
+                type: object
+                properties:
+                  latitude: 
+                    type: number
+                    description: float
+                  longitude: 
+                    type: number
+                    description: float
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    item_id: 
+                      type: integer
+                    quantity:
+                      type: integer
+                
+      
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/OrderDetail'
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404: 
+          description: Not enough info to create order!, Fee can not less than 0,User does not exist!,Vinid point does not enough to pay the order!
+        500:
+          description: Internal server error! 
+          
+  
+  /api/around_here:
+    get:
+      tags:
+        - Orther
+      security:
+        - Bearer: []
+      summary: Tìm cửa hàng xung quanh vị trí hiện tại
+      produces:
+        - application/json
+      parameters: 
+        - in: body
+          name: CoordinatesJSON
+          description: Thông tin tọa độ vị trí hiện tại
+          required: true
+          schema:
+            type: object
+            properties:
+              latitude: 
+                type: number
+                description: float
+              longitude: 
+                type: number
+                description: float
+
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Store'
+              meta:
+                 $ref: '#/definitions/Meta'
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404: 
+          description: Not enough info for request!
+        500:
+          description: Internal server error! 
+  
+  /api/notification:
+    get:
+      tags:
+        - Orther
+      security:
+        - Bearer: []
+      summary: Lấy danh sách các thông báo
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Notification'
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+                   
+        500:
+          description: Internal server error! 
+          
+  
+  /api/search/item:
+    get:
+      tags:
+        - Orther
+      security:
+        - Bearer: []
+      summary: Tìm kiếm full text các sản phẩm
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: text
+          type: string
+          description: Thông tin để tìm kiếm sản phẩm 
+      responses:
+        200:
+          description: Request successful!
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/IceCreamItem'
+              meta:
+                 $ref: '#/definitions/Meta'
+                
+            
+        401:
+          description: Header must include Authentication token!, Token invalid!
+        404: 
+          description: No text search!
+        500:
+          description: Internal server error! 
+
+definitions:
+
+  Order:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+      user_id:
+        type: integer
+        format: int
+      status:
+        type: integer
+        format: int
+      selivery_address:
+        type: string
+      ship_fee:
+        type: integer
+        format: int
+      total_fee:
+        type: integer
+        format: int
+      create_at:
+        type: string
+        description: timestamps
+        
+  OrderDetail:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+      user_id:
+        type: integer
+        format: int
+      status:
+        type: integer
+        format: int
+      selivery_address:
+        type: string
+      ship_fee:
+        type: integer
+        format: int
+      total_fee:
+        type: integer
+        format: int
+      create_at:
+        type: string
+        description: timestamps
+      items:
+        type: array
+        items:
+          type: object
+          properties:
+            item_info:
+              $ref: '#/definitions/IceCreamItem'
+            quantity: 
+              type : integer
+
+  Store:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+      name:
+        type: string
+      address:
+        type: string
+      image_path:
+        type: string
+      latitude:
+        type: number
+        format: float
+      longtitude:
+        type: number
+        format: float
+      created_at :
+        type: string
+        description: timestamps
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      full_name:
+        type: string
+      phone_number:
+        type: string
+      address:
+        type: string
+      password:
+        type: string
+      vinid_point:
+        type: integer
+        format: int
+      created_at:
+        type: string
+        description: timestamps
+        
+  Rating:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+      rating_star:
+        type: integer
+        format: int
+      comment:
+        type: string
+      item_id:
+        type: integer
+        format: int
+      user_id:
+        type: integer
+        format: int
+      created_at:
+        type: string
+        description: timestamps
+        
+  IceCreamItem:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+      name:
+        type: string
+      type:
+        type: string
+      image_paths:
+        type: array
+        items:
+          type: string
+      price:
+        type: integer
+        format: int
+      created_at:
+        type: string
+        description: timestamps
+  
+  IceCreamItemDetail:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+      name:
+        type: string
+      type:
+        type: string
+      image_paths:
+        type: array
+        items:
+          type: string
+      price:
+        type: integer
+        format: int
+      created_at:
+        type: string
+        description: timestamps
+      ratings:
+        type: array
+        items:
+          $ref: '#/definitions/Rating'
+        
+  Notification:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int
+      title:
+        type: string
+      content:
+        type: string
+      image_path:
+        type: string
+
+  Meta:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int
+      message:
+        type: string
+
+            
+            
+        
+
