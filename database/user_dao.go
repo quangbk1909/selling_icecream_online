@@ -88,3 +88,12 @@ func (dao *Dao) Authenticate(authenInfo model.AuthenticationJson) (model.User, e
 
 	return user, nil
 }
+
+func (dao *Dao) GetNotification() ([]model.Notification, error) {
+	var noti []model.Notification
+	err := dao.db.Find(&noti).Error
+	if err != nil {
+		return nil, err
+	}
+	return noti, nil
+}

@@ -233,3 +233,13 @@ func (controller *Controller) Deposite(c *gin.Context) {
 
 	c.JSON(http.StatusOK, utility.MakeResponse(200, "Deposit successfully!", user))
 }
+
+func (controller *Controller) GetNotification(c *gin.Context) {
+	var notis []model.Notification
+	notis, err := controller.dao.GetNotification()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utility.MakeResponse(500, err.Error(), nil))
+		return
+	}
+	c.JSON(http.StatusOK, utility.MakeResponse(200, "Request successfully!", notis))
+}

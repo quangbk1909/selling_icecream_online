@@ -63,6 +63,8 @@ func InitRoute(r *gin.Engine, c *controller.Controller) {
 			searchR.GET("/store", c.SearchStore)
 		}
 
+		apiR.GET("/notification", c.GetNotification)
+
 	}
 
 	r.GET("/resources/store_images/:name", c.GetStoreImage)

@@ -65,6 +65,14 @@ type IceCreamItem struct {
 	Ratings    []map[string]interface{} `json:"ratings"`
 }
 
+// chiếu đến bảng notification
+type Notification struct {
+	ID        int    `json:"id"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
+	ImagePath string `json:"image_path"`
+}
+
 // chiếu đến bảng order_item
 type OrderItem struct {
 	ID             int `json:"id"`

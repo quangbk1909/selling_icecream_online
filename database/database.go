@@ -49,7 +49,6 @@ func SetConfig() Config {
 		log.Println("Không đọc được file config.")
 		panic(err)
 	}
-
 	return conf
 }
 
