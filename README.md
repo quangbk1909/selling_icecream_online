@@ -4,7 +4,7 @@ Source code : back-end Golang
 ## Domain
 http://35.198.221.214:8080/
 ## API Doc
-Cập nhật sau
+https://app.swaggerhub.com/apis-docs/quangbk1909/swagger-ice_cream_online/1.0.0
 ## Thiết kế hệ thống
 ### Biểu đồ Usecase
 ![Usecase Diagram](https://i.ibb.co/CnmNsyY/usecase-v2.png)
