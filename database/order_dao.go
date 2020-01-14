@@ -36,6 +36,19 @@ func (dao *Dao) GetDetailOrderByID(id int) (model.OrderDetail, error) {
 				if err != nil {
 					continue
 				} else {
+
+					rows, err := dao.db.Table("item_image").Where("ice_cream_item_id = ?", item.ID).Select("image_path").Rows()
+					if err != nil {
+						item.ImagePaths = nil
+					}
+
+					for rows.Next() {
+						var image_path string
+						rows.Scan(&image_path)
+						item.ImagePaths = append(item.ImagePaths, image_path)
+					}
+					rows.Close()
+
 					itemInOrder := model.ItemInOrder{ItemInfo: item, Quantity: orderItem.Quantity}
 					orderDetail.Items = append(orderDetail.Items, itemInOrder)
 				}
