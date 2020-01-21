@@ -1,4 +1,4 @@
-# Vinid Project batch2
+# Icecream online
 Đề tài : App bán kem |
 Source code : back-end Golang
 ## Domain
